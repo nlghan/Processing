@@ -502,7 +502,7 @@ export default function MESProcessing() {
                                 <Plus size={12} /> Thêm NG
                               </button>
                             </div>
-                              )}
+                            )}
                           </div>
                         </td>
                       </tr>
