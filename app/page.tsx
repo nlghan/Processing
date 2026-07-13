@@ -23,15 +23,22 @@ export default function MESProcessing() {
   const [woListCollapsed, setWoListCollapsed] = useState(false);
 
   // Production Timer state
-  const [timerType, setTimerType] = useState<'manual' | 'machine'>('machine');
+  const [timerType, setTimerType] = useState<'manual' | 'machine'>('manual');
   const [timerStatus, setTimerStatus] = useState<'running' | 'paused' | 'idle'>('running');
   const [startTime, setStartTime] = useState('09:15:25');
   const [endTime, setEndTime] = useState('10:34:00');
   const [selectedMachine, setSelectedMachine] = useState('AOI-01');
   const [timerCollapsed, setTimerCollapsed] = useState(false);
   const [targetQty, setTargetQty] = useState('50');
-  const okQtyTimer = 48;
-  const ngQtyTimer = 2;
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [resultPopupOpen, setResultPopupOpen] = useState(false);
+  const [popupOkQty, setPopupOkQty] = useState('48');
+  const [popupNgQty, setPopupNgQty] = useState('2');
+  const [popupTeamSelection, setPopupTeamSelection] = useState(null);
+  const [popupTeamNgData, setPopupTeamNgData] = useState([]);
+  
+  const okQtyTimer = parseInt(popupOkQty) || 48;
+  const ngQtyTimer = parseInt(popupNgQty) || 2;
   const progress = Math.round((parseInt(targetQty) > 0 ? (okQtyTimer / parseInt(targetQty)) : 0) * 100);
 
   const machines = ['AOI-01', 'AOI-02', 'Printer-01', 'Dryer-01', 'AOI-03'];
@@ -376,7 +383,12 @@ export default function MESProcessing() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {/* Row 1 - Completed */}
-                    <tr className="hover:bg-blue-50 transition-colors">
+                    <tr className="hover:bg-blue-50 transition-colors" onClick={() => {
+                      setSelectedRowData({seq: 1, date: '2026-07-10 08:00', lotNo: 'LOT2026071001', qty: 100, ok: 100, ng: 0, worker: 'Admin'});
+                      setTargetQty('100');
+                      setPopupOkQty('100');
+                      setPopupNgQty('0');
+                    }} style={{cursor: 'pointer'}}>
                       <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">1</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 08:00</td>
@@ -387,14 +399,19 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">✓ Done</span></td>
                       <td className="px-3 py-2 text-right">
-                        <button onClick={() => setDetailsPopupRow(1)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
+                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(1); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
                           More
                         </button>
                       </td>
                     </tr>
 
                     {/* Row 2 - Open (Expandable) */}
-                    <tr className={`hover:bg-blue-50 transition-colors cursor-pointer ${expandedRow === 2 ? 'bg-blue-50' : ''}`}>
+                    <tr className={`hover:bg-blue-50 transition-colors cursor-pointer ${expandedRow === 2 ? 'bg-blue-50' : ''}`} onClick={() => {
+                      setSelectedRowData({seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'});
+                      setTargetQty('50');
+                      setPopupOkQty('48');
+                      setPopupNgQty('2');
+                    }}>
                       <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" checked /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">2</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 09:10</td>
@@ -404,7 +421,7 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-center text-red-600 font-semibold">2</td>
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">⚠ Open</span></td>
-                      <td className="px-3 py-2 flex justify-end gap-2 items-center">
+                      <td className="px-3 py-2 flex justify-end gap-2 items-center" onClick={(e) => e.stopPropagation()}>
                         <button onClick={() => setExpandedRow(expandedRow === 2 ? null : 2)} className="text-gray-600 hover:text-blue-600 p-1">
                           <ChevronDown size={16} className={`transition-transform ${expandedRow === 2 ? 'rotate-180' : ''}`} />
                         </button>
@@ -460,7 +477,7 @@ export default function MESProcessing() {
                                     {/* Basic Info Row */}
                                     <div className="grid grid-cols-4 gap-3">
                                       <div>
-                                        <label className="block text-xs font-medium text-gray-700 mb-1">Số Tôt</label>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">S��� Tôt</label>
                                         <input type="text" value={selectedProductionTeam?.code || ''} readOnly className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs bg-gray-50" />
                                       </div>
                                       <div>
@@ -771,7 +788,8 @@ export default function MESProcessing() {
 
             {!timerCollapsed && (
               <div className="flex flex-col gap-3 p-4">
-                {/* Status Badge */}
+                {/* Status Badge - Only show for Machine type */}
+                {timerType === 'machine' && (
                 <div className={`flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-semibold ${
                   timerStatus === 'running' ? 'bg-green-50 text-green-700' :
                   timerStatus === 'paused' ? 'bg-yellow-50 text-yellow-700' :
@@ -784,6 +802,7 @@ export default function MESProcessing() {
                   }`}></span>
                   {timerStatus === 'running' ? 'Running' : timerStatus === 'paused' ? 'Paused' : 'Idle'}
                 </div>
+                )}
 
                 {/* Type Dropdown */}
                 <div>
@@ -890,14 +909,10 @@ export default function MESProcessing() {
                     <Play size={13} /> Start
                   </button>
                   <button
-                    onClick={() => setTimerStatus('paused')}
-                    className={`flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold transition-colors ${
-                      timerStatus === 'paused'
-                        ? 'bg-yellow-500 text-white shadow-sm'
-                        : 'bg-yellow-50 text-yellow-700 border border-yellow-300 hover:bg-yellow-100'
-                    }`}
+                    onClick={() => setResultPopupOpen(true)}
+                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold bg-yellow-50 text-yellow-700 border border-yellow-300 hover:bg-yellow-100 transition-colors"
                   >
-                    <Pause size={13} /> Pause
+                    📊 Result
                   </button>
                   <button
                     onClick={() => { setTimerStatus('idle'); setTimerSeconds(0); }}
@@ -1090,6 +1105,144 @@ export default function MESProcessing() {
                   </button>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Result Input Popup Modal */}
+      {resultPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
+              <h2 className="font-semibold text-gray-800 text-lg">Nhập Kết Quả Sản Xuất</h2>
+              <button 
+                onClick={() => setResultPopupOpen(false)}
+                className="text-gray-500 hover:text-gray-700 p-1"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-6">
+              {/* Receive Qty */}
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Receive Qty</label>
+                <input 
+                  type="number" 
+                  value={targetQty}
+                  disabled
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-gray-50 text-gray-600 font-semibold"
+                />
+              </div>
+
+              {/* OK and NG Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">OK Qty</label>
+                  <input 
+                    type="number" 
+                    value={popupOkQty}
+                    onChange={(e) => setPopupOkQty(e.target.value)}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">NG Qty</label>
+                  <input 
+                    type="number" 
+                    value={popupNgQty}
+                    onChange={(e) => setPopupNgQty(e.target.value)}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              {/* Production Team Grid */}
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-3 pb-2 border-b border-gray-200">Nhập Tổ Sản Xuất</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead className="bg-gray-100 border-b border-gray-200">
+                      <tr>
+                        <th className="px-3 py-2 text-left font-semibold">Số Tôt</th>
+                        <th className="px-3 py-2 text-left font-semibold">Tên Tổ</th>
+                        <th className="px-3 py-2 text-center font-semibold">OK Qty</th>
+                        <th className="px-3 py-2 text-center font-semibold">NG Qty</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-3 py-2">RS_CELL 1</td>
+                        <td className="px-3 py-2">BOOTH 1</td>
+                        <td className="px-3 py-2 text-center">
+                          <input type="number" placeholder="0" className="w-12 border border-gray-300 rounded px-2 py-1 text-center text-xs" />
+                        </td>
+                        <td className="px-3 py-2 text-center">
+                          <input type="number" placeholder="0" className="w-12 border border-gray-300 rounded px-2 py-1 text-center text-xs" />
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-3 py-2">RS_CELL 2</td>
+                        <td className="px-3 py-2">BOOTH 2</td>
+                        <td className="px-3 py-2 text-center">
+                          <input type="number" placeholder="0" className="w-12 border border-gray-300 rounded px-2 py-1 text-center text-xs" />
+                        </td>
+                        <td className="px-3 py-2 text-center">
+                          <input type="number" placeholder="0" className="w-12 border border-gray-300 rounded px-2 py-1 text-center text-xs" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* NG Details Section */}
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-3 pb-2 border-b border-gray-200">Chi Tiết Nhập NG</h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Loại NG</label>
+                    <select className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                      <option>Bridge - Cầu thiếc</option>
+                      <option>Scratch - Trầy xước</option>
+                      <option>Cold Solder - Thiếc lạnh</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Số Lượng NG</label>
+                    <input type="number" placeholder="0" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Ghi Chú</label>
+                    <textarea placeholder="Nhập ghi chú" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none" rows={2}></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-2">
+              <button
+                onClick={() => setResultPopupOpen(false)}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (selectedRowData) {
+                    selectedRowData.ok = parseInt(popupOkQty);
+                    selectedRowData.ng = parseInt(popupNgQty);
+                  }
+                  setResultPopupOpen(false);
+                }}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
