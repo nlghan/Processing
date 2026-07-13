@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, Search, Plus, Trash2, X, Settings, ChevronRight, ChevronUp, Clock, Play, Pause, Square, Maximize2, Minimize2, RefreshCw } from 'lucide-react';
+import { ChevronDown, Search, Plus, Trash2, X, Settings, ChevronRight, ChevronUp, Play, Pause, Square, Maximize2, Minimize2, RefreshCw } from 'lucide-react';
 
 export default function MESProcessing() {
   const [selectedWO, setSelectedWO] = useState('WO2026070001');
@@ -25,31 +25,14 @@ export default function MESProcessing() {
   // Production Timer state
   const [timerType, setTimerType] = useState<'manual' | 'machine'>('machine');
   const [timerStatus, setTimerStatus] = useState<'running' | 'paused' | 'idle'>('running');
-  const [timerSeconds, setTimerSeconds] = useState(18 * 60 + 35); // 00:18:35
   const [startTime, setStartTime] = useState('09:15:25');
+  const [endTime, setEndTime] = useState('10:34:00');
   const [selectedMachine, setSelectedMachine] = useState('AOI-01');
   const [timerCollapsed, setTimerCollapsed] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (timerStatus === 'running') {
-      timerRef.current = setInterval(() => {
-        setTimerSeconds((s) => s + 1);
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [timerStatus]);
-
-  const formatTime = (totalSeconds: number) => {
-    const hh = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
-    const mm = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
-    const ss = (totalSeconds % 60).toString().padStart(2, '0');
-    return { hh, mm, ss };
-  };
-
-  const { hh, mm, ss } = formatTime(timerSeconds);
+  const [targetQty, setTargetQty] = useState('50');
+  const okQtyTimer = 48;
+  const ngQtyTimer = 2;
+  const progress = Math.round((parseInt(targetQty) > 0 ? (okQtyTimer / parseInt(targetQty)) : 0) * 100);
 
   const machines = ['AOI-01', 'AOI-02', 'Printer-01', 'Dryer-01', 'AOI-03'];
 
@@ -60,11 +43,6 @@ export default function MESProcessing() {
     { name: 'Dryer-01', status: 'Offline', color: 'bg-gray-400', runtime: '--:--:--', operator: '-' },
     { name: 'AOI-03', status: 'Alarm', color: 'bg-red-500', runtime: '00:03:45', operator: 'Trần Văn B' },
   ];
-
-  const targetQty = 50;
-  const okQtyTimer = 48;
-  const ngQtyTimer = 2;
-  const progress = Math.round((okQtyTimer / targetQty) * 100);
   
   const productionTeams = [
     { id: 1, name: 'BOOTH 1', code: 'RS_CELL 1', workers: 2 },
@@ -842,28 +820,7 @@ export default function MESProcessing() {
                 </div>
                 )}
 
-                {/* Clock Display */}
-                <div className="bg-gray-50 rounded-xl py-5 px-4 flex flex-col items-center border border-gray-100">
-                  <div className="flex items-center gap-3 mb-1">
-                    <Clock size={22} className={timerStatus === 'running' ? 'text-green-500' : 'text-gray-400'} />
-                    <div className="flex items-end gap-1">
-                      <span className={`text-4xl font-bold font-mono tracking-tight leading-none ${
-                        timerStatus === 'running' ? 'text-green-600' :
-                        timerStatus === 'paused' ? 'text-yellow-600' :
-                        'text-gray-500'
-                      }`}>
-                        {hh}:{mm}:{ss}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex gap-6 mt-2">
-                    <span className="text-xs text-gray-400 font-medium">HH</span>
-                    <span className="text-xs text-gray-400 font-medium">MM</span>
-                    <span className="text-xs text-gray-400 font-medium">SS</span>
-                  </div>
-                </div>
-
-                {/* Start Time & Today Runtime */}
+                {/* Start Time & End Time */}
                 <div className="grid grid-cols-2 gap-2">
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-500 font-medium mb-1">Start Time</div>
@@ -875,16 +832,26 @@ export default function MESProcessing() {
                     />
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
-                    <div className="text-xs text-gray-500 font-medium mb-1">Today Runtime</div>
-                    <div className="text-sm font-bold text-gray-800 font-mono">04:26:35</div>
+                    <div className="text-xs text-gray-500 font-medium mb-1">End Time</div>
+                    <input
+                      type="time"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      className="w-full text-sm font-bold text-gray-800 font-mono bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
+                    />
                   </div>
                 </div>
 
                 {/* Target / OK / NG Qty */}
                 <div className="grid grid-cols-3 gap-2">
-                  <div className="text-center">
-                    <div className="text-xs text-gray-500 font-medium mb-1">Target Qty</div>
-                    <div className="text-lg font-bold text-gray-800">{targetQty}</div>
+                  <div>
+                    <label className="text-xs text-gray-500 font-medium mb-1 block">Target Qty</label>
+                    <input
+                      type="number"
+                      value={targetQty}
+                      onChange={(e) => setTargetQty(e.target.value)}
+                      className="w-full text-lg font-bold text-gray-800 bg-white border border-gray-300 rounded px-2 py-1.5 text-center focus:outline-none focus:border-blue-500"
+                    />
                   </div>
                   <div className="text-center">
                     <div className="text-xs text-gray-500 font-medium mb-1">OK Qty</div>
