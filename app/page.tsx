@@ -383,12 +383,7 @@ export default function MESProcessing() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {/* Row 1 - Completed */}
-                    <tr className="hover:bg-blue-50 transition-colors" onClick={() => {
-                      setSelectedRowData({seq: 1, date: '2026-07-10 08:00', lotNo: 'LOT2026071001', qty: 100, ok: 100, ng: 0, worker: 'Admin'});
-                      setTargetQty('100');
-                      setPopupOkQty('100');
-                      setPopupNgQty('0');
-                    }} style={{cursor: 'pointer'}}>
+                    <tr className="hover:bg-blue-50 transition-colors">
                       <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">1</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 08:00</td>
@@ -399,19 +394,14 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">✓ Done</span></td>
                       <td className="px-3 py-2 text-right">
-                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(1); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
+                        <button onClick={() => setDetailsPopupRow(1)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
                           More
                         </button>
                       </td>
                     </tr>
 
                     {/* Row 2 - Open (Expandable) */}
-                    <tr className={`hover:bg-blue-50 transition-colors cursor-pointer ${expandedRow === 2 ? 'bg-blue-50' : ''}`} onClick={() => {
-                      setSelectedRowData({seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'});
-                      setTargetQty('50');
-                      setPopupOkQty('48');
-                      setPopupNgQty('2');
-                    }}>
+                    <tr className={`hover:bg-blue-50 transition-colors ${expandedRow === 2 ? 'bg-blue-50' : ''}`}>
                       <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" checked /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">2</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 09:10</td>
@@ -1312,31 +1302,75 @@ export default function MESProcessing() {
               )}
 
               {detailsPopupRow === 2 && (
-                <div>
-                  <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Loading Phase Details</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Loading Equipment</label>
-                      <select className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
-                        <option>Select equipment</option>
-                        <option>Loading Machine A</option>
-                        <option>Loading Machine B</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Loading Time (minutes)</label>
-                      <input type="number" placeholder="0" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Batch Size</label>
-                      <input type="number" value="50" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Operator Comments</label>
-                      <textarea placeholder="Comments" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none" rows="2"></textarea>
+                <>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Production Results</h3>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Receive Qty</label>
+                        <div className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-gray-50 text-gray-600 font-semibold">50</div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">OK Qty</label>
+                        <div className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-gray-50 text-green-600 font-semibold">48</div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">NG Qty</label>
+                        <div className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-gray-50 text-red-600 font-semibold">2</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-800 text-sm mb-3 pb-2 border-b border-gray-200">Production Team Details</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead className="bg-gray-100 border-b border-gray-200">
+                          <tr>
+                            <th className="px-3 py-2 text-left font-semibold">Số Tôt</th>
+                            <th className="px-3 py-2 text-left font-semibold">Tên Tổ</th>
+                            <th className="px-3 py-2 text-center font-semibold">OK Qty</th>
+                            <th className="px-3 py-2 text-center font-semibold">NG Qty</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                          <tr className="hover:bg-gray-50">
+                            <td className="px-3 py-2">RS_CELL 1</td>
+                            <td className="px-3 py-2">BOOTH 1</td>
+                            <td className="px-3 py-2 text-center font-semibold">25</td>
+                            <td className="px-3 py-2 text-center font-semibold">1</td>
+                          </tr>
+                          <tr className="hover:bg-gray-50">
+                            <td className="px-3 py-2">RS_CELL 2</td>
+                            <td className="px-3 py-2">BOOTH 2</td>
+                            <td className="px-3 py-2 text-center font-semibold">23</td>
+                            <td className="px-3 py-2 text-center font-semibold">1</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-800 text-sm mb-3 pb-2 border-b border-gray-200">NG Details</h3>
+                    <div className="space-y-2">
+                      <div className="bg-gray-50 rounded p-3 border border-gray-200">
+                        <div className="flex justify-between mb-1">
+                          <span className="text-xs font-medium text-gray-700">Bridge - Cầu thiếc</span>
+                          <span className="text-xs font-bold text-red-600">1 pcs</span>
+                        </div>
+                        <p className="text-xs text-gray-600">Ghi chú: Linh kiện bị lệch vị trí</p>
+                      </div>
+                      <div className="bg-gray-50 rounded p-3 border border-gray-200">
+                        <div className="flex justify-between mb-1">
+                          <span className="text-xs font-medium text-gray-700">Cold Solder - Thiếc lạnh</span>
+                          <span className="text-xs font-bold text-red-600">1 pcs</span>
+                        </div>
+                        <p className="text-xs text-gray-600">Ghi chú: Thiếc lạnh ở chân IC</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
 
               {detailsPopupRow === 3 && (
