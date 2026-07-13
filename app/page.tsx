@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { ChevronDown, Search, Plus, Trash2, X, Settings, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronDown, Search, Plus, Trash2, X, Settings, ChevronRight, ChevronUp, Clock, Play, Pause, Square, Maximize2, Minimize2, RefreshCw } from 'lucide-react';
 
 export default function MESProcessing() {
   const [selectedWO, setSelectedWO] = useState('WO2026070001');
@@ -20,6 +20,48 @@ export default function MESProcessing() {
   const [ngQty, setNgQty] = useState('');
   const [okQty, setOkQty] = useState('');
   const [notes, setNotes] = useState('');
+
+  // Production Timer state
+  const [timerStatus, setTimerStatus] = useState<'running' | 'paused' | 'idle'>('running');
+  const [timerSeconds, setTimerSeconds] = useState(18 * 60 + 35); // 00:18:35
+  const [selectedMachine, setSelectedMachine] = useState('AOI-01');
+  const [timerCollapsed, setTimerCollapsed] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (timerStatus === 'running') {
+      timerRef.current = setInterval(() => {
+        setTimerSeconds((s) => s + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [timerStatus]);
+
+  const formatTime = (totalSeconds: number) => {
+    const hh = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+    const mm = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+    const ss = (totalSeconds % 60).toString().padStart(2, '0');
+    return { hh, mm, ss };
+  };
+
+  const { hh, mm, ss } = formatTime(timerSeconds);
+
+  const machines = ['AOI-01', 'AOI-02', 'Printer-01', 'Dryer-01', 'AOI-03'];
+
+  const machineStatuses = [
+    { name: 'AOI-01', status: 'Running', color: 'bg-green-500', runtime: '00:18:35', operator: 'Admin' },
+    { name: 'AOI-02', status: 'Running', color: 'bg-green-500', runtime: '00:12:10', operator: 'Nguyễn Văn A' },
+    { name: 'Printer-01', status: 'Idle', color: 'bg-yellow-400', runtime: '--:--:--', operator: '-' },
+    { name: 'Dryer-01', status: 'Offline', color: 'bg-gray-400', runtime: '--:--:--', operator: '-' },
+    { name: 'AOI-03', status: 'Alarm', color: 'bg-red-500', runtime: '00:03:45', operator: 'Trần Văn B' },
+  ];
+
+  const targetQty = 50;
+  const okQtyTimer = 48;
+  const ngQtyTimer = 2;
+  const progress = Math.round((okQtyTimer / targetQty) * 100);
   
   const productionTeams = [
     { id: 1, name: 'BOOTH 1', code: 'RS_CELL 1', workers: 2 },
@@ -190,8 +232,10 @@ export default function MESProcessing() {
           <div className="p-2 border-t border-gray-200 text-xs text-gray-500 flex-shrink-0 bg-gray-50">1 - 7 of 25</div>
         </div>
 
-        {/* Right Content - Enlarged Grid */}
-        <div className="flex-1 overflow-y-auto bg-gray-50">
+        {/* Right Content - Main + Timer Sidebar */}
+        <div className="flex-1 flex overflow-hidden bg-gray-50">
+          {/* Main scrollable area */}
+          <div className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-2 gap-4 p-4 auto-rows-max">
             
             {/* Process Flow - Compact Card */}
@@ -624,6 +668,201 @@ export default function MESProcessing() {
               <button className="flex-1 bg-blue-100 text-blue-700 rounded-full px-3 py-2 text-xs font-semibold hover:bg-blue-200 transition-colors whitespace-nowrap">
                 Skip
               </button>
+            </div>
+          </div>
+          </div>
+
+          {/* Production Timer Sidebar */}
+          <div className="w-72 bg-white border-l border-gray-200 flex flex-col overflow-y-auto flex-shrink-0">
+            {/* Timer Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0">
+              <h3 className="font-semibold text-gray-800 text-sm">Production Timer</h3>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setTimerCollapsed(!timerCollapsed)}
+                  className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
+                >
+                  {timerCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+                </button>
+                <button className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+                  <Maximize2 size={14} />
+                </button>
+              </div>
+            </div>
+
+            {!timerCollapsed && (
+              <div className="flex flex-col gap-3 p-4">
+                {/* Status Badge */}
+                <div className={`flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-semibold ${
+                  timerStatus === 'running' ? 'bg-green-50 text-green-700' :
+                  timerStatus === 'paused' ? 'bg-yellow-50 text-yellow-700' :
+                  'bg-gray-100 text-gray-500'
+                }`}>
+                  <span className={`w-2 h-2 rounded-full ${
+                    timerStatus === 'running' ? 'bg-green-500 animate-pulse' :
+                    timerStatus === 'paused' ? 'bg-yellow-500' :
+                    'bg-gray-400'
+                  }`}></span>
+                  {timerStatus === 'running' ? 'Running' : timerStatus === 'paused' ? 'Paused' : 'Idle'}
+                </div>
+
+                {/* Machine Dropdown */}
+                <div>
+                  <label className="text-xs text-gray-500 font-medium block mb-1">Machine</label>
+                  <div className="relative">
+                    <select
+                      value={selectedMachine}
+                      onChange={(e) => setSelectedMachine(e.target.value)}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-800 bg-white appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    >
+                      {machines.map((m) => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Clock Display */}
+                <div className="bg-gray-50 rounded-xl py-5 px-4 flex flex-col items-center border border-gray-100">
+                  <div className="flex items-center gap-3 mb-1">
+                    <Clock size={22} className={timerStatus === 'running' ? 'text-green-500' : 'text-gray-400'} />
+                    <div className="flex items-end gap-1">
+                      <span className={`text-4xl font-bold font-mono tracking-tight leading-none ${
+                        timerStatus === 'running' ? 'text-green-600' :
+                        timerStatus === 'paused' ? 'text-yellow-600' :
+                        'text-gray-500'
+                      }`}>
+                        {hh}:{mm}:{ss}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex gap-6 mt-2">
+                    <span className="text-xs text-gray-400 font-medium">HH</span>
+                    <span className="text-xs text-gray-400 font-medium">MM</span>
+                    <span className="text-xs text-gray-400 font-medium">SS</span>
+                  </div>
+                </div>
+
+                {/* Start Time & Today Runtime */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                    <div className="text-xs text-gray-500 font-medium mb-1">Start Time</div>
+                    <div className="text-sm font-bold text-gray-800 font-mono">09:15:25</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                    <div className="text-xs text-gray-500 font-medium mb-1">Today Runtime</div>
+                    <div className="text-sm font-bold text-gray-800 font-mono">04:26:35</div>
+                  </div>
+                </div>
+
+                {/* Target / OK / NG Qty */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="text-center">
+                    <div className="text-xs text-gray-500 font-medium mb-1">Target Qty</div>
+                    <div className="text-lg font-bold text-gray-800">{targetQty}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xs text-gray-500 font-medium mb-1">OK Qty</div>
+                    <div className="text-lg font-bold text-green-600">{okQtyTimer}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xs text-gray-500 font-medium mb-1">NG Qty</div>
+                    <div className="text-lg font-bold text-red-500">{ngQtyTimer}</div>
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs text-gray-500 font-medium">Progress</span>
+                    <span className="text-xs font-bold text-gray-700">{progress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                    <div
+                      className="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-3 gap-2 pt-1">
+                  <button
+                    onClick={() => setTimerStatus('running')}
+                    className={`flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold transition-colors ${
+                      timerStatus === 'running'
+                        ? 'bg-green-600 text-white shadow-sm'
+                        : 'bg-green-50 text-green-700 border border-green-300 hover:bg-green-100'
+                    }`}
+                  >
+                    <Play size={13} /> Start
+                  </button>
+                  <button
+                    onClick={() => setTimerStatus('paused')}
+                    className={`flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold transition-colors ${
+                      timerStatus === 'paused'
+                        ? 'bg-yellow-500 text-white shadow-sm'
+                        : 'bg-yellow-50 text-yellow-700 border border-yellow-300 hover:bg-yellow-100'
+                    }`}
+                  >
+                    <Pause size={13} /> Pause
+                  </button>
+                  <button
+                    onClick={() => { setTimerStatus('idle'); setTimerSeconds(0); }}
+                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-300 hover:bg-red-100 transition-colors"
+                  >
+                    <Square size={13} /> End
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Machine Status Section */}
+            <div className="border-t border-gray-200 flex-1">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <h4 className="font-semibold text-gray-800 text-sm">Machine Status</h4>
+                <button className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+                  <RefreshCw size={13} />
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead className="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                      <th className="px-3 py-2 text-left font-semibold text-gray-600">Machine</th>
+                      <th className="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
+                      <th className="px-3 py-2 text-left font-semibold text-gray-600">Runtime</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {machineStatuses.map((m) => (
+                      <tr key={m.name} className="hover:bg-gray-50">
+                        <td className="px-3 py-2.5">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-5 h-5 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
+                              <span className="text-blue-600 text-[9px] font-bold">M</span>
+                            </div>
+                            <span className="font-medium text-gray-800">{m.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-2.5">
+                          <div className="flex items-center gap-1.5">
+                            <span className={`w-2 h-2 rounded-full flex-shrink-0 ${m.color} ${m.status === 'Running' ? 'animate-pulse' : ''}`}></span>
+                            <span className={`font-medium ${
+                              m.status === 'Running' ? 'text-green-600' :
+                              m.status === 'Idle' ? 'text-yellow-600' :
+                              m.status === 'Alarm' ? 'text-red-600' :
+                              'text-gray-500'
+                            }`}>{m.status}</span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-2.5 font-mono text-gray-700">{m.runtime}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
