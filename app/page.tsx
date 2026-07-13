@@ -20,10 +20,13 @@ export default function MESProcessing() {
   const [ngQty, setNgQty] = useState('');
   const [okQty, setOkQty] = useState('');
   const [notes, setNotes] = useState('');
+  const [woListCollapsed, setWoListCollapsed] = useState(false);
 
   // Production Timer state
+  const [timerType, setTimerType] = useState<'manual' | 'machine'>('machine');
   const [timerStatus, setTimerStatus] = useState<'running' | 'paused' | 'idle'>('running');
   const [timerSeconds, setTimerSeconds] = useState(18 * 60 + 35); // 00:18:35
+  const [startTime, setStartTime] = useState('09:15:25');
   const [selectedMachine, setSelectedMachine] = useState('AOI-01');
   const [timerCollapsed, setTimerCollapsed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -188,48 +191,73 @@ export default function MESProcessing() {
       {/* Main Content Area - Horizontal Layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Work Order List */}
-        <div className="w-60 bg-white border-r border-gray-200 flex flex-col">
-          <div className="p-3 border-b border-gray-200 flex-shrink-0">
-            <h3 className="font-semibold text-gray-800 mb-2 text-xs">Work Order List</h3>
-            <div className="flex items-center gap-2 bg-gray-50 rounded px-2 py-1">
-              <Search size={13} className="text-gray-400" />
-              <input placeholder="Search WO No. or Lot No." className="bg-transparent text-xs w-full outline-none" />
-            </div>
-          </div>
-          
-          <div className="flex-1 overflow-y-auto divide-y divide-gray-200">
-            {[
-              { wo: 'WO2026070001', lot: 'LOT2026070110', item: 'PCB001', status: 'IN PROGRESS' },
-              { wo: 'WO2026070002', lot: 'LOT2026070109', item: 'PCB002', status: 'READY' },
-              { wo: 'WO2026070003', lot: 'LOT2026070108', item: 'PCB001', status: 'READY' },
-              { wo: 'WO2026070004', lot: 'LOT2026070107', item: 'PCB003', status: 'HOLD' },
-              { wo: 'WO2026070005', lot: 'LOT2026070106', item: 'PCB002', status: 'DONE' },
-              { wo: 'WO2026070006', lot: 'LOT2026070105', item: 'PCB001', status: 'DONE' },
-              { wo: 'WO2026070007', lot: 'LOT2026070104', item: 'PCB003', status: 'READY' },
-            ].map((item) => (
-              <div
-                key={item.wo}
-                onClick={() => setSelectedWO(item.wo)}
-                className={`p-2.5 text-xs cursor-pointer hover:bg-gray-50 transition-colors ${selectedWO === item.wo ? 'bg-blue-50 border-l-2 border-blue-600' : ''}`}
+        <div className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ${woListCollapsed ? 'w-12' : 'w-60'}`}>
+          <div className={`p-3 border-b border-gray-200 flex-shrink-0 ${woListCollapsed ? 'flex items-center justify-center' : ''}`}>
+            {woListCollapsed ? (
+              <button
+                onClick={() => setWoListCollapsed(false)}
+                className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
+                title="Expand"
               >
-                <div className="font-semibold text-gray-900">{item.wo}</div>
-                <div className="text-gray-500 text-xs">{item.lot}</div>
-                <div className="flex gap-2 mt-1 items-center">
-                  <span className="text-gray-600 text-xs">{item.item}</span>
-                  <span className={`px-1.5 py-0.5 rounded text-xs font-semibold whitespace-nowrap ${
-                    item.status === 'IN PROGRESS' ? 'bg-blue-100 text-blue-700' :
-                    item.status === 'READY' ? 'bg-gray-100 text-gray-700' :
-                    item.status === 'HOLD' ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-green-100 text-green-700'
-                  }`}>
-                    {item.status}
-                  </span>
+                <ChevronRight size={16} />
+              </button>
+            ) : (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-semibold text-gray-800 text-xs">Work Order List</h3>
+                  <button
+                    onClick={() => setWoListCollapsed(true)}
+                    className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
+                    title="Collapse"
+                  >
+                    <ChevronDown size={14} />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 bg-gray-50 rounded px-2 py-1">
+                  <Search size={13} className="text-gray-400" />
+                  <input placeholder="Search WO No. or Lot No." className="bg-transparent text-xs w-full outline-none" />
                 </div>
               </div>
-            ))}
+            )}
           </div>
           
-          <div className="p-2 border-t border-gray-200 text-xs text-gray-500 flex-shrink-0 bg-gray-50">1 - 7 of 25</div>
+          {!woListCollapsed && (
+            <>
+            <div className="flex-1 overflow-y-auto divide-y divide-gray-200">
+              {[
+                { wo: 'WO2026070001', lot: 'LOT2026070110', item: 'PCB001', status: 'IN PROGRESS' },
+                { wo: 'WO2026070002', lot: 'LOT2026070109', item: 'PCB002', status: 'READY' },
+                { wo: 'WO2026070003', lot: 'LOT2026070108', item: 'PCB001', status: 'READY' },
+                { wo: 'WO2026070004', lot: 'LOT2026070107', item: 'PCB003', status: 'HOLD' },
+                { wo: 'WO2026070005', lot: 'LOT2026070106', item: 'PCB002', status: 'DONE' },
+                { wo: 'WO2026070006', lot: 'LOT2026070105', item: 'PCB001', status: 'DONE' },
+                { wo: 'WO2026070007', lot: 'LOT2026070104', item: 'PCB003', status: 'READY' },
+              ].map((item) => (
+                <div
+                  key={item.wo}
+                  onClick={() => setSelectedWO(item.wo)}
+                  className={`p-2.5 text-xs cursor-pointer hover:bg-gray-50 transition-colors ${selectedWO === item.wo ? 'bg-blue-50 border-l-2 border-blue-600' : ''}`}
+                >
+                  <div className="font-semibold text-gray-900">{item.wo}</div>
+                  <div className="text-gray-500 text-xs">{item.lot}</div>
+                  <div className="flex gap-2 mt-1 items-center">
+                    <span className="text-gray-600 text-xs">{item.item}</span>
+                    <span className={`px-1.5 py-0.5 rounded text-xs font-semibold whitespace-nowrap ${
+                      item.status === 'IN PROGRESS' ? 'bg-blue-100 text-blue-700' :
+                      item.status === 'READY' ? 'bg-gray-100 text-gray-700' :
+                      item.status === 'HOLD' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-green-100 text-green-700'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="p-2 border-t border-gray-200 text-xs text-gray-500 flex-shrink-0 bg-gray-50">1 - 7 of 25</div>
+            </>
+          )}
         </div>
 
         {/* Right Content - Main + Timer Sidebar */}
@@ -253,6 +281,42 @@ export default function MESProcessing() {
                   >
                     <ChevronRight size={18} />
                   </button>
+                </div>
+              </div>
+
+              {/* Work Order Info Grid */}
+              <div className="grid grid-cols-4 gap-3 mb-5 pb-5 border-b border-gray-200">
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Work Order Date</div>
+                  <div className="text-sm font-semibold text-gray-800">2026-07-10</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Work Order Code</div>
+                  <div className="text-sm font-semibold text-gray-800">WO2026070001</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Lot No.</div>
+                  <div className="text-sm font-semibold text-gray-800">LOT2026071001</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Delivery Date</div>
+                  <div className="text-sm font-semibold text-gray-800">2026-08-15</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Item Code</div>
+                  <div className="text-sm font-semibold text-gray-800">PCB001</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Receive Qty</div>
+                  <div className="text-sm font-semibold text-gray-800">1000</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Remain Qty</div>
+                  <div className="text-sm font-semibold text-gray-800">150</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 font-medium">Drawing No</div>
+                  <div className="text-sm font-semibold text-gray-800">DRW-2026-001</div>
                 </div>
               </div>
               
@@ -304,11 +368,8 @@ export default function MESProcessing() {
               <div className="flex items-center justify-between p-5 border-b border-gray-200 flex-shrink-0">
                 <h3 className="font-semibold text-gray-800 text-sm">Processing Session</h3>
                 <div className="flex gap-1.5">
-                  <button className="border border-gray-300 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-gray-50 flex items-center gap-1 transition-colors">
-                    <Plus size={13} /> Add
-                  </button>
-                  <button className="border border-green-300 bg-green-50 text-green-700 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-green-100 transition-colors">
-                    ✓ Finish
+                  <button className="border border-blue-300 bg-blue-50 text-blue-700 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-blue-100 transition-colors">
+                    💾 Save
                   </button>
                   <button className="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-yellow-100 transition-colors">
                     ⚠ Cancel
@@ -651,6 +712,46 @@ export default function MESProcessing() {
               </div>
             </div>
 
+            {/* Handover Section - 1 col */}
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800 text-sm">Handover</h3>
+                <button className="text-sm bg-green-500 text-white px-3 py-1.5 rounded font-semibold hover:bg-green-600">+ Add</button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Department</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Contact</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Status</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">QC Department</td>
+                      <td className="px-3 py-2 text-sm">Nguyễn Văn A</td>
+                      <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Completed</span></td>
+                      <td className="px-3 py-2 text-center text-sm">2026-07-10</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">Warehouse</td>
+                      <td className="px-3 py-2 text-sm">Trần Thị B</td>
+                      <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Pending</span></td>
+                      <td className="px-3 py-2 text-center text-sm">--</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">Logistics</td>
+                      <td className="px-3 py-2 text-sm">Phạm Văn C</td>
+                      <td className="px-3 py-2"><span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">Not Started</span></td>
+                      <td className="px-3 py-2 text-center text-sm">--</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             {/* Action Buttons - 2 cols */}
             <div className="col-span-2 flex gap-2 pb-4">
               <button className="flex-1 bg-blue-600 text-white rounded-full px-3 py-2 text-xs font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
@@ -706,7 +807,24 @@ export default function MESProcessing() {
                   {timerStatus === 'running' ? 'Running' : timerStatus === 'paused' ? 'Paused' : 'Idle'}
                 </div>
 
-                {/* Machine Dropdown */}
+                {/* Type Dropdown */}
+                <div>
+                  <label className="text-xs text-gray-500 font-medium block mb-1">Type</label>
+                  <div className="relative">
+                    <select
+                      value={timerType}
+                      onChange={(e) => setTimerType(e.target.value as 'manual' | 'machine')}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-800 bg-white appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    >
+                      <option value="manual">Manual</option>
+                      <option value="machine">Machine</option>
+                    </select>
+                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Machine Dropdown - Only show if Type is Machine */}
+                {timerType === 'machine' && (
                 <div>
                   <label className="text-xs text-gray-500 font-medium block mb-1">Machine</label>
                   <div className="relative">
@@ -722,6 +840,7 @@ export default function MESProcessing() {
                     <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
+                )}
 
                 {/* Clock Display */}
                 <div className="bg-gray-50 rounded-xl py-5 px-4 flex flex-col items-center border border-gray-100">
@@ -748,7 +867,12 @@ export default function MESProcessing() {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-500 font-medium mb-1">Start Time</div>
-                    <div className="text-sm font-bold text-gray-800 font-mono">09:15:25</div>
+                    <input
+                      type="time"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      className="w-full text-sm font-bold text-gray-800 font-mono bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
+                    />
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-500 font-medium mb-1">Today Runtime</div>
