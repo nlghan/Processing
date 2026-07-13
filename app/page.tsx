@@ -364,83 +364,86 @@ export default function MESProcessing() {
                             <div className="p-4">
                               {/* Production Team Input Tab */}
                               {expandedRowTab === 'team' && (
-                              <div className="space-y-4">
-                            {/* Production Team Input */}
-                            <div className="space-y-4">
-                              <div className="flex items-center justify-between mb-4">
-                                <span className="font-semibold text-gray-800 text-xs">Chọn Tổ Sản Xuất</span>
-                                <button onClick={() => setProductionTeamPopup(true)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline">
-                                  Chọn tổ
-                                </button>
-                              </div>
-                              
-                              {/* Basic Info Row */}
-                              <div className="grid grid-cols-4 gap-3">
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">Số Tôt</label>
-                                  <input type="text" value={selectedProductionTeam?.code || ''} readOnly className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs bg-gray-50" />
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">Tên Tổ</label>
-                                  <input type="text" value={selectedProductionTeam?.name || ''} readOnly className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs bg-gray-50" />
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">OK Qty</label>
-                                  <input type="number" value={okQty} onChange={(e) => setOkQty(e.target.value)} placeholder="0" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:border-blue-500" />
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">NG Qty</label>
-                                  <input type="number" value={ngQty} onChange={(e) => setNgQty(e.target.value)} placeholder="0" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:border-blue-500" />
-                                </div>
-                              </div>
-
-                              {/* Notes */}
-                              <div>
-                                <label className="block text-xs font-medium text-gray-700 mb-1">Ghi Chú</label>
-                                <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Nhập ghi chú" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:border-blue-500 resize-none" rows="2"></textarea>
-                              </div>
-
-                              {/* Workers and Equipment Row */}
-                              <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">Số Lượng Công Nhân</label>
-                                  <button onClick={() => setWorkerPopup(true)} className="w-full border border-blue-300 bg-blue-50 text-blue-600 rounded px-2 py-1.5 text-xs font-medium hover:bg-blue-100 transition-colors cursor-pointer text-left">
-                                    {selectedWorkers.length > 0 ? `${selectedWorkers.length} công nhân` : 'Chọn công nhân'}
-                                  </button>
-                                </div>
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">Số Lượng Máy</label>
-                                  <button onClick={() => setEquipmentPopup(true)} className="w-full border border-green-300 bg-green-50 text-green-600 rounded px-2 py-1.5 text-xs font-medium hover:bg-green-100 transition-colors cursor-pointer text-left">
-                                    {selectedEquipment.length > 0 ? `${selectedEquipment.length} máy` : 'Chọn máy'}
-                                  </button>
-                                </div>
-                              </div>
-
-                              {/* Selected Items Display */}
-                              {selectedWorkers.length > 0 && (
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">Công Nhân Đã Chọn</label>
-                                  <div className="flex flex-wrap gap-2">
-                                    {selectedWorkers.map((worker) => (
-                                      <div key={worker.id} className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
-                                        <span>{worker.name}</span>
-                                        <button onClick={() => setSelectedWorkers(selectedWorkers.filter(w => w.id !== worker.id))} className="text-blue-700 hover:text-blue-900 font-bold">✕</button>
+                                <div className="space-y-4">
+                                  {/* Production Team Input */}
+                                  <div className="space-y-4">
+                                    <div className="flex items-center justify-between mb-4">
+                                      <span className="font-semibold text-gray-800 text-xs">Chọn Tổ Sản Xuất</span>
+                                      <button onClick={() => setProductionTeamPopup(true)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline">
+                                        Chọn tổ
+                                      </button>
+                                    </div>
+                                    
+                                    {/* Basic Info Row */}
+                                    <div className="grid grid-cols-4 gap-3">
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Số Tôt</label>
+                                        <input type="text" value={selectedProductionTeam?.code || ''} readOnly className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs bg-gray-50" />
                                       </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-
-                              {selectedEquipment.length > 0 && (
-                                <div>
-                                  <label className="block text-xs font-medium text-gray-700 mb-1">Máy Đã Chọn</label>
-                                  <div className="flex flex-wrap gap-2">
-                                    {selectedEquipment.map((equip) => (
-                                      <div key={equip.id} className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
-                                        <span>{equip.name}</span>
-                                        <button onClick={() => setSelectedEquipment(selectedEquipment.filter(e => e.id !== equip.id))} className="text-green-700 hover:text-green-900 font-bold">✕</button>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Tên Tổ</label>
+                                        <input type="text" value={selectedProductionTeam?.name || ''} readOnly className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs bg-gray-50" />
                                       </div>
-                                    ))}
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">OK Qty</label>
+                                        <input type="number" value={okQty} onChange={(e) => setOkQty(e.target.value)} placeholder="0" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:border-blue-500" />
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">NG Qty</label>
+                                        <input type="number" value={ngQty} onChange={(e) => setNgQty(e.target.value)} placeholder="0" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:border-blue-500" />
+                                      </div>
+                                    </div>
+
+                                    {/* Notes */}
+                                    <div>
+                                      <label className="block text-xs font-medium text-gray-700 mb-1">Ghi Chú</label>
+                                      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Nhập ghi chú" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:border-blue-500 resize-none" rows="2"></textarea>
+                                    </div>
+
+                                    {/* Workers and Equipment Row */}
+                                    <div className="grid grid-cols-2 gap-3">
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Số Lượng Công Nhân</label>
+                                        <button onClick={() => setWorkerPopup(true)} className="w-full border border-blue-300 bg-blue-50 text-blue-600 rounded px-2 py-1.5 text-xs font-medium hover:bg-blue-100 transition-colors cursor-pointer text-left">
+                                          {selectedWorkers.length > 0 ? `${selectedWorkers.length} công nhân` : 'Chọn công nhân'}
+                                        </button>
+                                      </div>
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Số Lượng Máy</label>
+                                        <button onClick={() => setEquipmentPopup(true)} className="w-full border border-green-300 bg-green-50 text-green-600 rounded px-2 py-1.5 text-xs font-medium hover:bg-green-100 transition-colors cursor-pointer text-left">
+                                          {selectedEquipment.length > 0 ? `${selectedEquipment.length} máy` : 'Chọn máy'}
+                                        </button>
+                                      </div>
+                                    </div>
+
+                                    {/* Selected Items Display */}
+                                    {selectedWorkers.length > 0 && (
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Công Nhân Đã Chọn</label>
+                                        <div className="flex flex-wrap gap-2">
+                                          {selectedWorkers.map((worker) => (
+                                            <div key={worker.id} className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                                              <span>{worker.name}</span>
+                                              <button onClick={() => setSelectedWorkers(selectedWorkers.filter(w => w.id !== worker.id))} className="text-blue-700 hover:text-blue-900 font-bold">✕</button>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {selectedEquipment.length > 0 && (
+                                      <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Máy Đã Chọn</label>
+                                        <div className="flex flex-wrap gap-2">
+                                          {selectedEquipment.map((equip) => (
+                                            <div key={equip.id} className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+                                              <span>{equip.name}</span>
+                                              <button onClick={() => setSelectedEquipment(selectedEquipment.filter(e => e.id !== equip.id))} className="text-green-700 hover:text-green-900 font-bold">✕</button>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               )}
@@ -452,50 +455,50 @@ export default function MESProcessing() {
                                   <div className="space-y-3">
                                     <table className="w-full text-xs">
                                       <thead className="bg-gray-100 border-b border-gray-200">
-                                  <tr>
-                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Loại NG</th>
-                                    <th className="px-3 py-2 text-center font-semibold text-gray-700">Số Lượng</th>
-                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Ghi Chú</th>
-                                    <th className="px-3 py-2 text-center w-8"></th>
-                                      </tr>
+                                        <tr>
+                                          <th className="px-3 py-2 text-left font-semibold text-gray-700">Loại NG</th>
+                                          <th className="px-3 py-2 text-center font-semibold text-gray-700">Số Lượng</th>
+                                          <th className="px-3 py-2 text-left font-semibold text-gray-700">Ghi Chú</th>
+                                          <th className="px-3 py-2 text-center w-8"></th>
+                                        </tr>
                                       </thead>
                                       <tbody className="divide-y divide-gray-200">
-                                  <tr className="hover:bg-gray-50">
-                                    <td className="px-3 py-2">
-                                      <select className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500">
-                                        <option>Bridge - Cầu thiếc</option>
-                                        <option>Scratch - Trầy xước</option>
-                                        <option>Cold Solder - Thiếc lạnh</option>
-                                      </select>
-                                    </td>
-                                    <td className="px-3 py-2">
-                                      <input type="number" value="1" className="w-full border border-gray-300 rounded px-2 py-1 text-xs text-center focus:outline-none focus:border-blue-500" />
-                                    </td>
-                                    <td className="px-3 py-2">
-                                      <input type="text" placeholder="Ghi chú" className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" />
-                                    </td>
-                                    <td className="px-3 py-2 text-center">
-                                      <button className="text-red-600 hover:text-red-700 text-xs font-semibold">✕</button>
-                                    </td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50">
-                                    <td className="px-3 py-2">
-                                      <select className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500">
-                                        <option>Bridge - Cầu thiếc</option>
-                                        <option>Scratch - Trầy xước</option>
-                                        <option>Cold Solder - Thiếc lạnh</option>
-                                      </select>
-                                    </td>
-                                    <td className="px-3 py-2">
-                                      <input type="number" value="1" className="w-full border border-gray-300 rounded px-2 py-1 text-xs text-center focus:outline-none focus:border-blue-500" />
-                                    </td>
-                                    <td className="px-3 py-2">
-                                      <input type="text" placeholder="Ghi chú" className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" />
-                                    </td>
-                                    <td className="px-3 py-2 text-center">
-                                      <button className="text-red-600 hover:text-red-700 text-xs font-semibold">✕</button>
-                                    </td>
-                                      </tr>
+                                        <tr className="hover:bg-gray-50">
+                                          <td className="px-3 py-2">
+                                            <select className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500">
+                                              <option>Bridge - Cầu thiếc</option>
+                                              <option>Scratch - Trầy xước</option>
+                                              <option>Cold Solder - Thiếc lạnh</option>
+                                            </select>
+                                          </td>
+                                          <td className="px-3 py-2">
+                                            <input type="number" value="1" className="w-full border border-gray-300 rounded px-2 py-1 text-xs text-center focus:outline-none focus:border-blue-500" />
+                                          </td>
+                                          <td className="px-3 py-2">
+                                            <input type="text" placeholder="Ghi chú" className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" />
+                                          </td>
+                                          <td className="px-3 py-2 text-center">
+                                            <button className="text-red-600 hover:text-red-700 text-xs font-semibold">✕</button>
+                                          </td>
+                                        </tr>
+                                        <tr className="hover:bg-gray-50">
+                                          <td className="px-3 py-2">
+                                            <select className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500">
+                                              <option>Bridge - Cầu thiếc</option>
+                                              <option>Scratch - Trầy xước</option>
+                                              <option>Cold Solder - Thiếc lạnh</option>
+                                            </select>
+                                          </td>
+                                          <td className="px-3 py-2">
+                                            <input type="number" value="1" className="w-full border border-gray-300 rounded px-2 py-1 text-xs text-center focus:outline-none focus:border-blue-500" />
+                                          </td>
+                                          <td className="px-3 py-2">
+                                            <input type="text" placeholder="Ghi chú" className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" />
+                                          </td>
+                                          <td className="px-3 py-2 text-center">
+                                            <button className="text-red-600 hover:text-red-700 text-xs font-semibold">✕</button>
+                                          </td>
+                                        </tr>
                                       </tbody>
                                     </table>
                                   </div>
@@ -504,7 +507,8 @@ export default function MESProcessing() {
                                   </button>
                                 </div>
                               )}
-                              </div>
+                            </div>
+                          </div>
                         </td>
                       </tr>
                     )}
@@ -623,7 +627,6 @@ export default function MESProcessing() {
             </div>
           </div>
         </div>
-      </div>
       </div>
 
       {/* Worker Selection Popup */}
