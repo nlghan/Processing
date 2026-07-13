@@ -447,19 +447,19 @@ export default function MESProcessing() {
 
                               {/* NG Input Tab */}
                               {expandedRowTab === 'ng' && (
-                              <div className="space-y-4">
-                            {/* NG Input */}
-                            <div className="space-y-3">
-                              <table className="w-full text-xs">
-                                <thead className="bg-gray-100 border-b border-gray-200">
+                                <div className="space-y-4">
+                                  {/* NG Input */}
+                                  <div className="space-y-3">
+                                    <table className="w-full text-xs">
+                                      <thead className="bg-gray-100 border-b border-gray-200">
                                   <tr>
                                     <th className="px-3 py-2 text-left font-semibold text-gray-700">Loại NG</th>
                                     <th className="px-3 py-2 text-center font-semibold text-gray-700">Số Lượng</th>
                                     <th className="px-3 py-2 text-left font-semibold text-gray-700">Ghi Chú</th>
                                     <th className="px-3 py-2 text-center w-8"></th>
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
+                                      </tr>
+                                      </thead>
+                                      <tbody className="divide-y divide-gray-200">
                                   <tr className="hover:bg-gray-50">
                                     <td className="px-3 py-2">
                                       <select className="w-full border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500">
@@ -495,15 +495,16 @@ export default function MESProcessing() {
                                     <td className="px-3 py-2 text-center">
                                       <button className="text-red-600 hover:text-red-700 text-xs font-semibold">✕</button>
                                     </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              <button className="mt-2 text-blue-600 hover:text-blue-700 text-xs font-medium flex items-center gap-1">
-                                <Plus size={12} /> Thêm NG
-                              </button>
-                            </div>
-                            )}
-                          </div>
+                                      </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <button className="mt-2 text-blue-600 hover:text-blue-700 text-xs font-medium flex items-center gap-1">
+                                    <Plus size={12} /> Thêm NG
+                                  </button>
+                                </div>
+                              )}
+                              </div>
                         </td>
                       </tr>
                     )}
