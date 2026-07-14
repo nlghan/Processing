@@ -677,7 +677,7 @@ export default function MESProcessing() {
                 )}
 
                 {/* Start Time & End Time */}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex flex-col gap-2">
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-500 font-medium mb-1">Start Time</div>
                     <input
@@ -767,8 +767,8 @@ export default function MESProcessing() {
               </div>
             )}
 
-            {/* Machine Status Section */}
-            <div className="border-t border-gray-200 flex-1">
+            {/* Machine Status Section - only show when type is Machine */}
+            {timerType === 'machine' && <div className="border-t border-gray-200 flex-1">
               <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                 <h4 className="font-semibold text-gray-800 text-sm">Machine Status</h4>
                 <button className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
@@ -812,7 +812,7 @@ export default function MESProcessing() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </div>
