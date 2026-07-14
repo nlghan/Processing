@@ -548,39 +548,71 @@ export default function MESProcessing() {
             <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800 text-sm">Handover</h3>
-                <button className="text-sm bg-green-500 text-white px-3 py-1.5 rounded font-semibold hover:bg-green-600">+ Add</button>
+                <button className="text-sm bg-orange-500 text-white px-3 py-1.5 rounded font-semibold hover:bg-orange-600 transition-colors">Take selected</button>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-100 border-b border-gray-200">
-                    <tr>
-                      <th className="px-3 py-2 text-left text-xs font-semibold">Department</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold">Contact</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold">Status</th>
-                      <th className="px-3 py-2 text-center text-xs font-semibold">Date</th>
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="bg-[#1a5276] text-white">
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">seq</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Process</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Sender name</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Handover Date</th>
+                      <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">Handover Qty</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Send Remark</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Receiver</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Received Date</th>
+                      <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">Remain Qty</th>
+                      <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">Received Qty</th>
+                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Remark</th>
+                      <th className="px-2 py-2 text-center font-semibold whitespace-nowrap">button</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">QC Department</td>
-                      <td className="px-3 py-2 text-sm">Nguyễn Văn A</td>
-                      <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Completed</span></td>
-                      <td className="px-3 py-2 text-center text-sm">2026-07-10</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">Warehouse</td>
-                      <td className="px-3 py-2 text-sm">Trần Thị B</td>
-                      <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Pending</span></td>
-                      <td className="px-3 py-2 text-center text-sm">--</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">Logistics</td>
-                      <td className="px-3 py-2 text-sm">Phạm Văn C</td>
-                      <td className="px-3 py-2"><span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">Not Started</span></td>
-                      <td className="px-3 py-2 text-center text-sm">--</td>
-                    </tr>
+                    {[
+                      { seq: 'R01', process: '', sender: '2250844', handoverDate: '2026-03-19 18:37:09', handoverQty: 10, sendRemark: '', receiver: '2250844', receivedDate: '2026-03-19 18:37:20', remainQty: 0, receivedQty: 10, remark: '' },
+                    ].map((row, i) => (
+                      <tr key={i} className="hover:bg-blue-50 transition-colors bg-white">
+                        <td className="px-2 py-2 text-gray-700">{row.seq}</td>
+                        <td className="px-2 py-2 text-gray-700">{row.process}</td>
+                        <td className="px-2 py-2 text-gray-700">{row.sender}</td>
+                        <td className="px-2 py-2 text-gray-700 whitespace-nowrap">{row.handoverDate}</td>
+                        <td className="px-2 py-2 text-right text-gray-700 italic">{row.handoverQty}</td>
+                        <td className="px-2 py-2 text-gray-500">{row.sendRemark}</td>
+                        <td className="px-2 py-2 text-gray-700">{row.receiver}</td>
+                        <td className="px-2 py-2 text-gray-700 whitespace-nowrap">{row.receivedDate}</td>
+                        <td className="px-2 py-2 text-right text-gray-700 italic">{row.remainQty}</td>
+                        <td className="px-2 py-2 text-right text-gray-700 italic">{row.receivedQty}</td>
+                        <td className="px-2 py-2 text-gray-500">{row.remark}</td>
+                        <td className="px-2 py-2 text-center">
+                          <button className="bg-orange-500 text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap">
+                            Take it
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
+              </div>
+              {/* Footer */}
+              <div className="flex items-center justify-between mt-3 text-xs text-gray-500 border-t border-gray-200 pt-2">
+                <div className="flex items-center gap-1">
+                  <span>Show</span>
+                  <select className="border border-gray-300 rounded px-1 py-0.5 text-xs bg-white">
+                    <option>100</option>
+                    <option>50</option>
+                    <option>25</option>
+                  </select>
+                  <span>entries</span>
+                </div>
+                <span>1-1 of 1 items</span>
+                <div className="flex items-center gap-1">
+                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&lt;</button>
+                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&lt;&lt;</button>
+                  <button className="border border-gray-300 rounded px-2 py-0.5 bg-white font-semibold">1</button>
+                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&gt;&gt;</button>
+                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&gt;</button>
+                </div>
               </div>
             </div>
 
