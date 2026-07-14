@@ -23,6 +23,8 @@ export default function MESProcessing() {
   const [targetQty, setTargetQty] = useState('50');
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [resultPopupOpen, setResultPopupOpen] = useState(false);
+  const [endTimePopupOpen, setEndTimePopupOpen] = useState(false);
+  const [tempEndTime, setTempEndTime] = useState('10:34:00');
   const [popupOkQty, setPopupOkQty] = useState('48');
   const [popupNgQty, setPopupNgQty] = useState('2');
   const [popupTeamSelection, setPopupTeamSelection] = useState(null);
@@ -369,7 +371,7 @@ export default function MESProcessing() {
                       <th className="px-3 py-2.5 text-center font-semibold text-gray-700">NG</th>
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Worker</th>
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Status</th>
-                      <th className="px-3 py-2.5 text-right w-12"></th>
+                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 w-16">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
@@ -385,7 +387,7 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">✓ Done</span></td>
                       <td className="px-3 py-2 text-right">
-                        <button onClick={() => setDetailsPopupRow(1)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
+                        <button onClick={() => setDetailsPopupRow(1)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
                       </td>
@@ -402,8 +404,17 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-center text-red-600 font-semibold">2</td>
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">⚠ Open</span></td>
-                      <td className="px-3 py-2 text-right">
-                        <button onClick={() => setDetailsPopupRow(2)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
+                      <td className="px-3 py-2 text-right flex gap-2 items-center justify-end">
+                        <button onClick={() => {
+                          setSelectedRowData({seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'});
+                          setTargetQty('50');
+                          setPopupOkQty('48');
+                          setPopupNgQty('2');
+                          setResultPopupOpen(true);
+                        }} className="bg-yellow-50 text-yellow-700 border border-yellow-300 px-2.5 py-1.5 rounded text-xs font-medium hover:bg-yellow-100 transition-colors whitespace-nowrap">
+                          📊 Result
+                        </button>
+                        <button onClick={() => setDetailsPopupRow(2)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
                       </td>
@@ -421,7 +432,7 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-gray-700">-</td>
                       <td className="px-3 py-2"><span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">Draft</span></td>
                       <td className="px-3 py-2 text-right">
-                        <button onClick={() => setDetailsPopupRow(3)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors">
+                        <button onClick={() => setDetailsPopupRow(3)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
                       </td>
@@ -640,19 +651,21 @@ export default function MESProcessing() {
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-500 font-medium mb-1">Start Time</div>
                     <input
-                      type="time"
+                      type="text"
                       value={startTime}
                       onChange={(e) => setStartTime(e.target.value)}
+                      placeholder="yyyy-mm-dd hh:mm:ss"
                       className="w-full text-sm font-bold text-gray-800 font-mono bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
                     />
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
                     <div className="text-xs text-gray-500 font-medium mb-1">End Time</div>
                     <input
-                      type="time"
+                      type="text"
                       value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
-                      className="w-full text-sm font-bold text-gray-800 font-mono bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
+                      disabled
+                      placeholder="yyyy-mm-dd hh:mm:ss"
+                      className="w-full text-sm font-bold text-gray-600 font-mono bg-gray-100 border border-gray-300 rounded px-2 py-1 cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -705,13 +718,7 @@ export default function MESProcessing() {
                     <Play size={13} /> Start
                   </button>
                   <button
-                    onClick={() => setResultPopupOpen(true)}
-                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold bg-yellow-50 text-yellow-700 border border-yellow-300 hover:bg-yellow-100 transition-colors"
-                  >
-                    📊 Result
-                  </button>
-                  <button
-                    onClick={() => { setTimerStatus('idle'); setTimerSeconds(0); }}
+                    onClick={() => setEndTimePopupOpen(true)}
                     className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-300 hover:bg-red-100 transition-colors"
                   >
                     <Square size={13} /> End
@@ -893,13 +900,53 @@ export default function MESProcessing() {
               >
                 Cancel
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* End Time Picker Popup Modal */}
+      {endTimePopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-sm">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+              <h2 className="font-semibold text-gray-800 text-lg">Chọn End Time</h2>
+              <button 
+                onClick={() => setEndTimePopupOpen(false)}
+                className="text-gray-500 hover:text-gray-700 p-1"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-2">End Time</label>
+                <input 
+                  type="text" 
+                  value={tempEndTime}
+                  onChange={(e) => setTempEndTime(e.target.value)}
+                  placeholder="yyyy-mm-dd hh:mm:ss"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 font-mono"
+                />
+                <p className="text-xs text-gray-500 mt-1">Format: yyyy-mm-dd hh:mm:ss</p>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-2">
+              <button
+                onClick={() => setEndTimePopupOpen(false)}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors text-sm"
+              >
+                Cancel
+              </button>
               <button
                 onClick={() => {
-                  if (selectedRowData) {
-                    selectedRowData.ok = parseInt(popupOkQty);
-                    selectedRowData.ng = parseInt(popupNgQty);
-                  }
-                  setResultPopupOpen(false);
+                  setEndTime(tempEndTime);
+                  setEndTimePopupOpen(false);
                 }}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
               >
