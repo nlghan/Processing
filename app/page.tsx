@@ -16,8 +16,12 @@ export default function MESProcessing() {
   // Production Timer state
   const [timerType, setTimerType] = useState<'manual' | 'machine'>('manual');
   const [timerStatus, setTimerStatus] = useState<'running' | 'paused' | 'idle'>('running');
-  const [startTime, setStartTime] = useState('09:15:25');
-  const [endTime, setEndTime] = useState('10:34:00');
+  const [startTime, setStartTime] = useState(() => {
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  });
+  const [endTime, setEndTime] = useState('');
   const [selectedMachine, setSelectedMachine] = useState('AOI-01');
   const [timerCollapsed, setTimerCollapsed] = useState(false);
   const [targetQty, setTargetQty] = useState('50');
@@ -25,7 +29,11 @@ export default function MESProcessing() {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [resultPopupOpen, setResultPopupOpen] = useState(false);
   const [endTimePopupOpen, setEndTimePopupOpen] = useState(false);
-  const [tempEndTime, setTempEndTime] = useState('10:34:00');
+  const [tempEndTime, setTempEndTime] = useState(() => {
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  });
   const [popupOkQty, setPopupOkQty] = useState('48');
   const [popupNgQty, setPopupNgQty] = useState('2');
   const [popupTeamSelection, setPopupTeamSelection] = useState(null);
@@ -703,13 +711,23 @@ export default function MESProcessing() {
                       className="w-full text-lg font-bold text-gray-800 bg-white border border-gray-300 rounded px-2 py-1.5 text-center focus:outline-none focus:border-blue-500"
                     />
                   </div>
-                  <div className="text-center">
-                    <div className="text-xs text-gray-500 font-medium mb-1">OK Qty</div>
-                    <div className="text-lg font-bold text-green-600">{okQtyTimer}</div>
+                  <div>
+                    <label className="text-xs text-gray-500 font-medium mb-1 block">OK Qty</label>
+                    <input
+                      type="number"
+                      value={okQtyTimer}
+                      disabled
+                      className="w-full text-lg font-bold text-green-600 bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-center cursor-not-allowed"
+                    />
                   </div>
-                  <div className="text-center">
-                    <div className="text-xs text-gray-500 font-medium mb-1">NG Qty</div>
-                    <div className="text-lg font-bold text-red-500">{ngQtyTimer}</div>
+                  <div>
+                    <label className="text-xs text-gray-500 font-medium mb-1 block">NG Qty</label>
+                    <input
+                      type="number"
+                      value={ngQtyTimer}
+                      disabled
+                      className="w-full text-lg font-bold text-red-500 bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-center cursor-not-allowed"
+                    />
                   </div>
                 </div>
 
