@@ -545,47 +545,49 @@ export default function MESProcessing() {
             </div>
 
             {/* Handover Section - 1 col */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
-              <div className="flex items-center justify-between mb-4">
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 flex flex-col h-full">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
                 <h3 className="font-semibold text-gray-800 text-sm">Handover</h3>
-                <button className="text-sm bg-orange-500 text-white px-3 py-1.5 rounded font-semibold hover:bg-orange-600 transition-colors">Take selected</button>
+                <button className="text-sm bg-orange-500 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-orange-600 transition-colors">Take selected</button>
               </div>
-              <div className="overflow-x-auto">
+              <div className="flex-1 overflow-y-auto">
                 <table className="w-full text-xs">
-                  <thead>
-                    <tr className="bg-[#1a5276] text-white">
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">seq</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Process</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Sender name</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Handover Date</th>
-                      <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">Handover Qty</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Send Remark</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Receiver</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Received Date</th>
-                      <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">Remain Qty</th>
-                      <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">Received Qty</th>
-                      <th className="px-2 py-2 text-left font-semibold whitespace-nowrap">Remark</th>
-                      <th className="px-2 py-2 text-center font-semibold whitespace-nowrap">button</th>
+                  <thead className="sticky top-0">
+                    <tr className="bg-gray-100 border-y border-gray-300">
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap w-8"><input type="checkbox" className="rounded w-3.5 h-3.5" /></th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">seq</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Process</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Sender name</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Handover Date</th>
+                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Handover Qty</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Send Remark</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Receiver</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Received Date</th>
+                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Remain Qty</th>
+                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Received Qty</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {[
                       { seq: 'R01', process: '', sender: '2250844', handoverDate: '2026-03-19 18:37:09', handoverQty: 10, sendRemark: '', receiver: '2250844', receivedDate: '2026-03-19 18:37:20', remainQty: 0, receivedQty: 10, remark: '' },
                     ].map((row, i) => (
-                      <tr key={i} className="hover:bg-blue-50 transition-colors bg-white">
-                        <td className="px-2 py-2 text-gray-700">{row.seq}</td>
-                        <td className="px-2 py-2 text-gray-700">{row.process}</td>
-                        <td className="px-2 py-2 text-gray-700">{row.sender}</td>
-                        <td className="px-2 py-2 text-gray-700 whitespace-nowrap">{row.handoverDate}</td>
-                        <td className="px-2 py-2 text-right text-gray-700 italic">{row.handoverQty}</td>
-                        <td className="px-2 py-2 text-gray-500">{row.sendRemark}</td>
-                        <td className="px-2 py-2 text-gray-700">{row.receiver}</td>
-                        <td className="px-2 py-2 text-gray-700 whitespace-nowrap">{row.receivedDate}</td>
-                        <td className="px-2 py-2 text-right text-gray-700 italic">{row.remainQty}</td>
-                        <td className="px-2 py-2 text-right text-gray-700 italic">{row.receivedQty}</td>
-                        <td className="px-2 py-2 text-gray-500">{row.remark}</td>
-                        <td className="px-2 py-2 text-center">
-                          <button className="bg-orange-500 text-white px-2.5 py-1 rounded text-xs font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap">
+                      <tr key={i} className="hover:bg-gray-50 transition-colors bg-white">
+                        <td className="px-3 py-2 text-center"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
+                        <td className="px-3 py-2 text-gray-700 font-medium">{row.seq}</td>
+                        <td className="px-3 py-2 text-gray-600">{row.process}</td>
+                        <td className="px-3 py-2 text-gray-700">{row.sender}</td>
+                        <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{row.handoverDate}</td>
+                        <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.handoverQty}</td>
+                        <td className="px-3 py-2 text-gray-500 text-xs">{row.sendRemark || '-'}</td>
+                        <td className="px-3 py-2 text-gray-700">{row.receiver}</td>
+                        <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{row.receivedDate}</td>
+                        <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.remainQty}</td>
+                        <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.receivedQty}</td>
+                        <td className="px-3 py-2 text-gray-500 text-xs">{row.remark || '-'}</td>
+                        <td className="px-3 py-2 text-center">
+                          <button className="bg-orange-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap">
                             Take it
                           </button>
                         </td>
@@ -594,24 +596,24 @@ export default function MESProcessing() {
                   </tbody>
                 </table>
               </div>
-              {/* Footer */}
-              <div className="flex items-center justify-between mt-3 text-xs text-gray-500 border-t border-gray-200 pt-2">
-                <div className="flex items-center gap-1">
-                  <span>Show</span>
-                  <select className="border border-gray-300 rounded px-1 py-0.5 text-xs bg-white">
+              {/* Fixed Footer */}
+              <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-600">Show</span>
+                  <select className="border border-gray-300 rounded px-2 py-1 text-xs bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:border-blue-500">
                     <option>100</option>
                     <option>50</option>
                     <option>25</option>
                   </select>
-                  <span>entries</span>
+                  <span className="text-xs text-gray-600">entries</span>
                 </div>
-                <span>1-1 of 1 items</span>
+                <span className="text-xs text-gray-600">1-1 of 1 items</span>
                 <div className="flex items-center gap-1">
-                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&lt;</button>
-                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&lt;&lt;</button>
-                  <button className="border border-gray-300 rounded px-2 py-0.5 bg-white font-semibold">1</button>
-                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&gt;&gt;</button>
-                  <button className="border border-gray-300 rounded px-1.5 py-0.5 hover:bg-gray-100">&gt;</button>
+                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="First">&laquo;</button>
+                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="Previous">&lt;</button>
+                  <button className="border border-gray-300 rounded px-2 py-1 bg-blue-600 text-white font-semibold min-w-[28px]">1</button>
+                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="Next">&gt;</button>
+                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="Last">&raquo;</button>
                 </div>
               </div>
             </div>
