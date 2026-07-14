@@ -21,6 +21,7 @@ export default function MESProcessing() {
   const [selectedMachine, setSelectedMachine] = useState('AOI-01');
   const [timerCollapsed, setTimerCollapsed] = useState(false);
   const [targetQty, setTargetQty] = useState('50');
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [resultPopupOpen, setResultPopupOpen] = useState(false);
   const [endTimePopupOpen, setEndTimePopupOpen] = useState(false);
@@ -346,11 +347,32 @@ export default function MESProcessing() {
               <div className="flex items-center justify-between p-5 border-b border-gray-200 flex-shrink-0">
                 <h3 className="font-semibold text-gray-800 text-sm">Processing Session</h3>
                 <div className="flex gap-1.5">
-                  <button className="border border-blue-300 bg-blue-50 text-blue-700 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-blue-100 transition-colors">
-                    💾 Save
+                  <button
+                    onClick={() => {
+                      if (selectedRow === null) return;
+                      const rows = [
+                        {seq: 1, date: '2026-07-10 08:00', lotNo: 'LOT2026071001', qty: 100, ok: 100, ng: 0, worker: 'Admin'},
+                        {seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'},
+                        {seq: 3, date: '2026-07-10 10:15', lotNo: 'LOT2026071003', qty: 30, ok: 0, ng: 0, worker: '-'},
+                      ];
+                      const row = rows[selectedRow - 1];
+                      setSelectedRowData(row);
+                      setTargetQty(String(row.qty));
+                      setPopupOkQty(String(row.ok));
+                      setPopupNgQty(String(row.ng));
+                      setResultPopupOpen(true);
+                    }}
+                    disabled={selectedRow === null}
+                    className={`border rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                      selectedRow !== null
+                        ? 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer'
+                        : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    Result
                   </button>
                   <button className="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-yellow-100 transition-colors">
-                    ⚠ Cancel
+                    Cancel
                   </button>
                   <button className="border border-red-300 bg-red-50 text-red-700 rounded-full px-2.5 py-1.5 text-xs font-medium hover:bg-red-100 flex items-center gap-1 transition-colors">
                     <Trash2 size={13} /> Delete
@@ -376,8 +398,8 @@ export default function MESProcessing() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {/* Row 1 - Completed */}
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
+                    <tr onClick={() => setSelectedRow(selectedRow === 1 ? null : 1)} className={`cursor-pointer transition-colors ${selectedRow === 1 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
+                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 1} className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">1</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 08:00</td>
                       <td className="px-3 py-2 text-gray-700">LOT2026071001</td>
@@ -387,15 +409,15 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">✓ Done</span></td>
                       <td className="px-3 py-2 text-right">
-                        <button onClick={() => setDetailsPopupRow(1)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(1); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
                       </td>
                     </tr>
 
                     {/* Row 2 - Open */}
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" checked /></td>
+                    <tr onClick={() => setSelectedRow(selectedRow === 2 ? null : 2)} className={`cursor-pointer transition-colors ${selectedRow === 2 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
+                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 2} className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">2</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 09:10</td>
                       <td className="px-3 py-2 text-gray-700">LOT2026071002</td>
@@ -404,25 +426,16 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-center text-red-600 font-semibold">2</td>
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">⚠ Open</span></td>
-                      <td className="px-3 py-2 text-right flex gap-2 items-center justify-end">
-                        <button onClick={() => {
-                          setSelectedRowData({seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'});
-                          setTargetQty('50');
-                          setPopupOkQty('48');
-                          setPopupNgQty('2');
-                          setResultPopupOpen(true);
-                        }} className="bg-yellow-50 text-yellow-700 border border-yellow-300 px-2.5 py-1.5 rounded text-xs font-medium hover:bg-yellow-100 transition-colors whitespace-nowrap">
-                          📊 Result
-                        </button>
-                        <button onClick={() => setDetailsPopupRow(2)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                      <td className="px-3 py-2 text-right">
+                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(2); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
                       </td>
                     </tr>
 
                     {/* Row 3 - Draft */}
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
+                    <tr onClick={() => setSelectedRow(selectedRow === 3 ? null : 3)} className={`cursor-pointer transition-colors ${selectedRow === 3 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
+                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 3} className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900">3</td>
                       <td className="px-3 py-2 text-gray-700">2026-07-10 10:15</td>
                       <td className="px-3 py-2 text-gray-700">LOT2026071003</td>
@@ -432,7 +445,7 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-gray-700">-</td>
                       <td className="px-3 py-2"><span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">Draft</span></td>
                       <td className="px-3 py-2 text-right">
-                        <button onClick={() => setDetailsPopupRow(3)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(3); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
                       </td>
@@ -706,22 +719,22 @@ export default function MESProcessing() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="grid grid-cols-3 gap-2 pt-1">
+                <div className="grid grid-cols-2 gap-2 pt-1">
                   <button
                     onClick={() => setTimerStatus('running')}
-                    className={`flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold transition-colors ${
+                    className={`flex items-center justify-center gap-1.5 py-3 rounded-lg text-sm font-bold transition-colors ${
                       timerStatus === 'running'
                         ? 'bg-green-600 text-white shadow-sm'
                         : 'bg-green-50 text-green-700 border border-green-300 hover:bg-green-100'
                     }`}
                   >
-                    <Play size={13} /> Start
+                    <Play size={14} /> Start
                   </button>
                   <button
                     onClick={() => setEndTimePopupOpen(true)}
-                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold bg-red-50 text-red-600 border border-red-300 hover:bg-red-100 transition-colors"
+                    className="flex items-center justify-center gap-1.5 py-3 rounded-lg text-sm font-bold bg-red-50 text-red-600 border border-red-300 hover:bg-red-100 transition-colors"
                   >
-                    <Square size={13} /> End
+                    <Square size={14} /> End
                   </button>
                 </div>
               </div>
