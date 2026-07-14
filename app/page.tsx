@@ -87,9 +87,6 @@ export default function MESProcessing() {
           <h1 className="text-lg font-semibold text-gray-800">Processing Execution</h1>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={() => setIsFilterOpen(true)} className="text-gray-600 hover:bg-gray-100 px-3 py-2 rounded flex items-center gap-2 border border-gray-200">
-            <Settings size={16} /> Filter
-          </button>
           <button className="text-sm text-gray-600 hover:bg-gray-100 px-3 py-2 rounded flex items-center gap-2">
             Admin <ChevronDown size={16} />
           </button>
@@ -184,13 +181,18 @@ export default function MESProcessing() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-gray-800 text-xs">Work Order List</h3>
-                  <button
-                    onClick={() => setWoListCollapsed(true)}
-                    className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
-                    title="Collapse"
-                  >
-                    <ChevronDown size={14} />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => setIsFilterOpen(true)} className="text-gray-600 hover:bg-gray-100 p-1 rounded" title="Filter">
+                      <Settings size={14} />
+                    </button>
+                    <button
+                      onClick={() => setWoListCollapsed(true)}
+                      className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
+                      title="Collapse"
+                    >
+                      <ChevronDown size={14} />
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 bg-gray-50 rounded px-2 py-1">
                   <Search size={13} className="text-gray-400" />
