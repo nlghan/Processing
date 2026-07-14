@@ -93,81 +93,12 @@ export default function MESProcessing() {
         </div>
       </div>
 
-      {/* Filter Modal - Collapsible */}
-      {isFilterOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-20 z-50 flex items-start justify-end pt-16">
-          <div className="bg-white w-96 h-[calc(100vh-64px)] shadow-lg flex flex-col rounded-l-lg">
-            {/* Filter Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h2 className="font-semibold text-gray-800 text-sm">Filter (5 fields)</h2>
-              <button onClick={() => setIsFilterOpen(false)} className="text-gray-500 hover:text-gray-700">
-                <X size={20} />
-              </button>
-            </div>
 
-            {/* Manage Fields Button */}
-            <div className="px-4 py-2 border-b border-gray-200">
-              <button className="text-blue-600 text-sm font-medium hover:text-blue-700 flex items-center gap-1">
-                Manage Fields <ChevronDown size={14} />
-              </button>
-            </div>
-
-            {/* Filter Fields */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-2">Status</label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2 bg-white text-sm hover:border-gray-400">
-                  <option>Pending</option>
-                  <option>Active</option>
-                  <option>Completed</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-2">Order From</label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2 bg-white text-sm hover:border-gray-400">
-                  <option>HQ</option>
-                  <option>Branch</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-2">Order Date</label>
-                <input type="date" defaultValue="2026-07-01" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
-                <div className="flex gap-2 mt-2">
-                  <span className="text-gray-500 text-sm">-</span>
-                  <input type="date" defaultValue="2026-08-01" className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm" />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-2">Dept</label>
-                <input placeholder="Dept" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-2">Drawing No</label>
-                <input placeholder="Drawing No" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
-              </div>
-            </div>
-
-            {/* Close Button */}
-            <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-              <button 
-                onClick={() => setIsFilterOpen(false)}
-                className="w-full bg-gray-300 text-gray-700 px-4 py-2 rounded font-medium hover:bg-gray-400 text-sm"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Main Content Area - Horizontal Layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Work Order List */}
-        <div className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ${woListCollapsed ? 'w-12' : 'w-60'}`}>
+        <div className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 relative ${woListCollapsed ? 'w-12' : 'w-60'}`}>
           <div className={`p-3 border-b border-gray-200 flex-shrink-0 ${woListCollapsed ? 'flex items-center justify-center' : ''}`}>
             {woListCollapsed ? (
               <button
@@ -182,7 +113,11 @@ export default function MESProcessing() {
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-gray-800 text-xs">Work Order List</h3>
                   <div className="flex items-center gap-1">
-                    <button onClick={() => setIsFilterOpen(true)} className="text-gray-600 hover:bg-gray-100 p-1 rounded" title="Filter">
+                    <button
+                      onClick={() => setIsFilterOpen(!isFilterOpen)}
+                      className={`p-1 rounded transition-colors ${isFilterOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                      title="Filter"
+                    >
                       <Settings size={14} />
                     </button>
                     <button
@@ -201,6 +136,77 @@ export default function MESProcessing() {
               </div>
             )}
           </div>
+
+          {/* Filter Dropdown Panel - outside header div to avoid overflow clip */}
+          {!woListCollapsed && isFilterOpen && (
+            <div className="absolute left-0 top-[72px] w-72 bg-white border border-gray-200 shadow-xl z-50 flex flex-col">
+              {/* Filter Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <span className="font-semibold text-gray-800 text-xs">Filter (5 fields)</span>
+                <button onClick={() => setIsFilterOpen(false)} className="text-gray-400 hover:text-gray-600">
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Manage Fields */}
+              <div className="px-4 py-2 border-b border-gray-200">
+                <button className="text-blue-600 text-xs font-medium hover:text-blue-700 flex items-center gap-1">
+                  Manage Fields <ChevronDown size={12} />
+                </button>
+              </div>
+
+              {/* Filter Fields */}
+              <div className="overflow-y-auto max-h-80 p-4 space-y-3">
+                <div>
+                  <label className="text-xs font-medium text-gray-700 block mb-1">Status</label>
+                  <select className="w-full border border-gray-300 rounded px-2 py-1.5 bg-white text-xs hover:border-gray-400">
+                    <option>Pending</option>
+                    <option>Active</option>
+                    <option>Completed</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-700 block mb-1">Order From</label>
+                  <select className="w-full border border-gray-300 rounded px-2 py-1.5 bg-white text-xs hover:border-gray-400">
+                    <option>HQ</option>
+                    <option>Branch</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-700 block mb-1">Order Date</label>
+                  <input type="date" defaultValue="2026-07-01" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs" />
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className="text-gray-400 text-xs">to</span>
+                    <input type="date" defaultValue="2026-08-01" className="flex-1 border border-gray-300 rounded px-2 py-1.5 text-xs" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-700 block mb-1">Dept</label>
+                  <input placeholder="Dept" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs" />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-700 block mb-1">Drawing No</label>
+                  <input placeholder="Drawing No" className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs" />
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-4 py-3 border-t border-gray-200 bg-gray-50 flex gap-2">
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="flex-1 bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Apply
+                </button>
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="flex-1 bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs font-medium hover:bg-gray-300 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
           
           {!woListCollapsed && (
             <>
