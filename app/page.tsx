@@ -194,7 +194,7 @@ export default function MESProcessing() {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 bg-gray-50 rounded px-2 py-1">
+                <div className="flex items-center gap-2 px-2 py-1 border-b border-gray-200">
                   <Search size={13} className="text-gray-400" />
                   <input placeholder="Search WO No. or Lot No." className="bg-transparent text-xs w-full outline-none" />
                 </div>
