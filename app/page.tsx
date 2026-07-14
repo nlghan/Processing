@@ -225,10 +225,8 @@ export default function MESProcessing() {
                   onClick={() => setSelectedWO(item.wo)}
                   className={`p-2.5 text-xs cursor-pointer hover:bg-gray-50 transition-colors ${selectedWO === item.wo ? 'bg-blue-50 border-l-2 border-blue-600' : ''}`}
                 >
-                  <div className="font-semibold text-gray-900">{item.wo}</div>
-                  <div className="text-gray-500 text-xs">{item.lot}</div>
-                  <div className="flex gap-2 mt-1 items-center">
-                    <span className="text-gray-600 text-xs">[{item.itemCode}] {item.itemName}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="font-semibold text-gray-900">{item.wo}</div>
                     <span className={`px-1.5 py-0.5 rounded text-xs font-semibold whitespace-nowrap ${
                       item.status === 'Open' ? 'bg-gray-100 text-gray-700' :
                       item.status === 'Release' ? 'bg-yellow-100 text-yellow-700' :
@@ -239,6 +237,8 @@ export default function MESProcessing() {
                       {item.status}
                     </span>
                   </div>
+                  <div className="text-gray-500 text-xs">{item.lot}</div>
+                  <div className="text-gray-600 text-xs mt-1">[{item.itemCode}] {item.itemName}</div>
                 </div>
               ))}
             </div>
