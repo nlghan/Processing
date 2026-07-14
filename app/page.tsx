@@ -1170,7 +1170,7 @@ export default function MESProcessing() {
       {/* Work Order Details Modal */}
       {isWODetailsOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-20 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
               <h2 className="font-semibold text-gray-800 text-lg">Work Order Details</h2>
@@ -1184,77 +1184,104 @@ export default function MESProcessing() {
 
             {/* Modal Content */}
             <div className="p-6 space-y-6">
-              {/* Basic Information Section */}
+              {/* Section 1: Basic Information */}
               <div>
                 <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Basic Information</h3>
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">WO No.</span>
-                    <span className="font-semibold text-base">WO2026070001</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Lot No.</span>
-                    <span className="font-semibold text-base">LOT2026070110</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Item Code</span>
-                    <span className="font-semibold text-base">PCB001</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Item Name</span>
-                    <span className="font-semibold text-base">PCB BOARD</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Due Date</span>
-                    <span className="font-semibold text-base">2026-07-10</span>
-                  </div>
+                <div className="grid grid-cols-3 gap-6">
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Level</span><span className="font-semibold text-sm">1</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Lot No</span><span className="font-semibold text-sm">LOT2026070110</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Work Order No</span><span className="font-semibold text-sm">WO2026070001</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Work Order Date</span><span className="font-semibold text-sm">2026-07-10 08:30:00</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Line Req Delivery Date</span><span className="font-semibold text-sm">2026-07-15</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Production Rank</span><span className="font-semibold text-sm">High</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Sales Order No</span><span className="font-semibold text-sm">SO-2026-001</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Routing Type</span><span className="font-semibold text-sm">Standard</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Production Type</span><span className="font-semibold text-sm">Mass</span></div>
                 </div>
               </div>
 
-              {/* Process Information Section */}
+              {/* Section 2: Item & Order Info */}
               <div>
-                <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Process Information</h3>
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Current Process</span>
-                    <span className="font-semibold text-base">PRT - Printing</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Process Name</span>
-                    <span className="font-semibold text-base">Printing</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Production Line</span>
-                    <span className="font-semibold text-base">LJ01 - Line 01</span>
-                  </div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Item & Order Information</h3>
+                <div className="grid grid-cols-3 gap-6">
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Manufacturing Division</span><span className="font-semibold text-sm">Assembly</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Production Req No</span><span className="font-semibold text-sm">PR-2026-001</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Item Code</span><span className="font-semibold text-sm">PCB001</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Item Name</span><span className="font-semibold text-sm">PCB Assembly Board</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Drawing No</span><span className="font-semibold text-sm">DWG-PCB001-R2</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Drawing DWG URL</span><span className="text-blue-600 text-xs font-semibold hover:underline cursor-pointer">View File</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Type (Large)</span><span className="font-semibold text-sm">Component</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Type (Small)</span><span className="font-semibold text-sm">A1</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Part Type</span><span className="font-semibold text-sm">PCB</span></div>
                 </div>
               </div>
 
-              {/* Quantity Information Section */}
+              {/* Section 3: Classification & Status */}
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Classification & Status</h3>
+                <div className="grid grid-cols-3 gap-6">
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Item Classification</span><span className="font-semibold text-sm">Standard</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">OQC Status</span><span className="font-semibold text-sm">Pass</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Status</span><span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold inline-block">Open</span></div>
+                </div>
+              </div>
+
+              {/* Section 4: Quantity Information */}
               <div>
                 <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Quantity Information</h3>
+                <div className="grid grid-cols-4 gap-6">
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Production Req Qty</span><span className="font-bold text-lg">1,000 EA</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Work Order Qty</span><span className="font-bold text-lg">1,000 EA</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Final Real Quantity</span><span className="font-bold text-lg text-green-600">950 EA</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">IQC Qty</span><span className="font-bold text-lg">1,000 EA</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">OQC Qty</span><span className="font-bold text-lg">950 EA</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Order Qty</span><span className="font-bold text-lg">1,000 EA</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Para Qty</span><span className="font-bold text-lg">50 EA</span></div>
+                </div>
+              </div>
+
+              {/* Section 5: Date Information */}
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Date Information</h3>
                 <div className="grid grid-cols-3 gap-6">
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Plan Qty</span>
-                    <span className="font-bold text-lg">1,000 EA</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Completed</span>
-                    <span className="font-bold text-lg text-green-600">650 EA</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 text-xs font-medium block mb-1">Remaining</span>
-                    <span className="font-bold text-lg text-orange-600">350 EA</span>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Production Completion Date</span><span className="font-semibold text-sm">2026-07-12</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Order Date</span><span className="font-semibold text-sm">2026-07-05</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Finished Prod Req Date</span><span className="font-semibold text-sm">2026-07-15</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">IQC Date</span><span className="font-semibold text-sm">2026-07-11</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Created By</span><span className="font-semibold text-sm">Admin</span></div>
+                </div>
+              </div>
+
+              {/* Section 6: Process & Routing */}
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Process & Routing</h3>
+                <div className="grid grid-cols-3 gap-6">
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Current Process</span><span className="font-semibold text-sm">Printing</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Rout No</span><span className="font-semibold text-sm">RT-001</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Inspection No</span><span className="font-semibold text-sm">INS-001</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Inspection YN</span><span className="font-semibold text-sm">Yes</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Req Type</span><span className="font-semibold text-sm">Standard</span></div>
+                  <div><span className="text-gray-600 text-xs font-medium block mb-1">Request Material</span><span className="font-semibold text-sm">Yes</span></div>
+                </div>
+              </div>
+
+              {/* Section 7: Additional Notes */}
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm mb-4 pb-2 border-b border-gray-200">Additional Information</h3>
+                <div>
+                  <span className="text-gray-600 text-xs font-medium block mb-1">Remark</span>
+                  <div className="bg-gray-50 p-3 rounded text-sm text-gray-700 min-h-[80px] border border-gray-200">
+                    This is a standard PCB assembly order. No special handling required. Please follow standard QC procedures.
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end">
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-2">
               <button
                 onClick={() => setIsWODetailsOpen(false)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors"
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors text-sm"
               >
                 Close
               </button>
