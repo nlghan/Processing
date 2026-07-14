@@ -566,14 +566,20 @@ export default function MESProcessing() {
                       <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Remain Qty</th>
                       <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Received Qty</th>
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
-                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Action</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Status</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {[
-                      { seq: 'R01', process: '', sender: '2250844', handoverDate: '2026-03-19 18:37:09', handoverQty: 10, sendRemark: '', receiver: '2250844', receivedDate: '2026-03-19 18:37:20', remainQty: 0, receivedQty: 10, remark: '' },
+                      { seq: 'R01', process: '', sender: '2250844', handoverDate: '2026-03-19 18:37:09', handoverQty: 10, sendRemark: '', receiver: '2250844', receivedDate: '2026-03-19 18:37:20', remainQty: 0, receivedQty: 10, remark: '', status: 'Pending' },
                     ].map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors bg-white">
+                      <tr 
+                        key={i} 
+                        onDoubleClick={() => alert(`Taking ${row.seq}`)}
+                        className={`transition-colors cursor-pointer ${row.status === 'Pending' ? 'bg-yellow-50 hover:bg-yellow-100' : 'bg-white hover:bg-gray-50'}`}
+                        title="Double-click to take"
+                      >
                         <td className="px-3 py-2 text-center"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
                         <td className="px-3 py-2 text-gray-700 font-medium">{row.seq}</td>
                         <td className="px-3 py-2 text-gray-600">{row.process}</td>
@@ -587,9 +593,28 @@ export default function MESProcessing() {
                         <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.receivedQty}</td>
                         <td className="px-3 py-2 text-gray-500 text-xs">{row.remark || '-'}</td>
                         <td className="px-3 py-2 text-center">
-                          <button className="bg-orange-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap">
-                            Take it
-                          </button>
+                          <span className={`px-2 py-1 rounded text-xs font-semibold whitespace-nowrap inline-block ${
+                            row.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'
+                          }`}>
+                            {row.status}
+                          </span>
+                        </td>
+                        <td className="px-3 py-2 text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            <button 
+                              onClick={() => alert(`Taking ${row.seq}`)}
+                              className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap"
+                              title="Take it"
+                            >
+                              Take it
+                            </button>
+                            <button className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap" title="Edit">
+                              Edit
+                            </button>
+                            <button className="bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-red-600 transition-colors whitespace-nowrap" title="Delete">
+                              Del
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
