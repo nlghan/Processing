@@ -404,7 +404,16 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-center text-red-600 font-semibold">2</td>
                       <td className="px-3 py-2 text-gray-700">Admin</td>
                       <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">⚠ Open</span></td>
-                      <td className="px-3 py-2 text-right">
+                      <td className="px-3 py-2 text-right flex gap-2 items-center justify-end">
+                        <button onClick={() => {
+                          setSelectedRowData({seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'});
+                          setTargetQty('50');
+                          setPopupOkQty('48');
+                          setPopupNgQty('2');
+                          setResultPopupOpen(true);
+                        }} className="bg-yellow-50 text-yellow-700 border border-yellow-300 px-2.5 py-1.5 rounded text-xs font-medium hover:bg-yellow-100 transition-colors whitespace-nowrap">
+                          📊 Result
+                        </button>
                         <button onClick={() => setDetailsPopupRow(2)} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
@@ -571,16 +580,7 @@ export default function MESProcessing() {
             {/* Timer Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0">
               <h3 className="font-semibold text-gray-800 text-sm">Production Timer</h3>
-              <div className="flex items-center gap-1.5">
-                <button onClick={() => {
-                  setSelectedRowData({seq: 2, date: '2026-07-10 09:10', lotNo: 'LOT2026071002', qty: 50, ok: 48, ng: 2, worker: 'Admin'});
-                  setTargetQty('50');
-                  setPopupOkQty('48');
-                  setPopupNgQty('2');
-                  setResultPopupOpen(true);
-                }} className="bg-cyan-100 text-cyan-700 border border-blue-400 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-cyan-200 transition-colors whitespace-nowrap">
-                  📊 Result
-                </button>
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => setTimerCollapsed(!timerCollapsed)}
                   className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
@@ -899,6 +899,12 @@ export default function MESProcessing() {
                 className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors text-sm"
               >
                 Cancel
+              </button>
+              <button
+                onClick={() => setResultPopupOpen(false)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+              >
+                Result
               </button>
             </div>
           </div>
