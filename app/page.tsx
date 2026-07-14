@@ -212,13 +212,13 @@ export default function MESProcessing() {
             <>
             <div className="flex-1 overflow-y-auto divide-y divide-gray-200">
               {[
-                { wo: 'WO2026070001', lot: 'LOT2026070110', item: 'PCB001', status: 'IN PROGRESS' },
-                { wo: 'WO2026070002', lot: 'LOT2026070109', item: 'PCB002', status: 'READY' },
-                { wo: 'WO2026070003', lot: 'LOT2026070108', item: 'PCB001', status: 'READY' },
-                { wo: 'WO2026070004', lot: 'LOT2026070107', item: 'PCB003', status: 'HOLD' },
-                { wo: 'WO2026070005', lot: 'LOT2026070106', item: 'PCB002', status: 'DONE' },
-                { wo: 'WO2026070006', lot: 'LOT2026070105', item: 'PCB001', status: 'DONE' },
-                { wo: 'WO2026070007', lot: 'LOT2026070104', item: 'PCB003', status: 'READY' },
+                { wo: 'WO2026070001', lot: 'LOT2026070110', itemCode: 'PCB001', itemName: 'PCB Assembly Board', status: 'Open' },
+                { wo: 'WO2026070002', lot: 'LOT2026070109', itemCode: 'PCB002', itemName: 'Flexible Board', status: 'Release' },
+                { wo: 'WO2026070003', lot: 'LOT2026070108', itemCode: 'PCB001', itemName: 'PCB Assembly Board', status: 'Open' },
+                { wo: 'WO2026070004', lot: 'LOT2026070107', itemCode: 'PCB003', itemName: 'High Density Board', status: 'Block' },
+                { wo: 'WO2026070005', lot: 'LOT2026070106', itemCode: 'PCB002', itemName: 'Flexible Board', status: 'Close' },
+                { wo: 'WO2026070006', lot: 'LOT2026070105', itemCode: 'PCB001', itemName: 'PCB Assembly Board', status: 'Close' },
+                { wo: 'WO2026070007', lot: 'LOT2026070104', itemCode: 'PCB003', itemName: 'High Density Board', status: 'Release' },
               ].map((item) => (
                 <div
                   key={item.wo}
@@ -228,12 +228,13 @@ export default function MESProcessing() {
                   <div className="font-semibold text-gray-900">{item.wo}</div>
                   <div className="text-gray-500 text-xs">{item.lot}</div>
                   <div className="flex gap-2 mt-1 items-center">
-                    <span className="text-gray-600 text-xs">{item.item}</span>
+                    <span className="text-gray-600 text-xs">[{item.itemCode}] {item.itemName}</span>
                     <span className={`px-1.5 py-0.5 rounded text-xs font-semibold whitespace-nowrap ${
-                      item.status === 'IN PROGRESS' ? 'bg-blue-100 text-blue-700' :
-                      item.status === 'READY' ? 'bg-gray-100 text-gray-700' :
-                      item.status === 'HOLD' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-green-100 text-green-700'
+                      item.status === 'Open' ? 'bg-gray-100 text-gray-700' :
+                      item.status === 'Release' ? 'bg-yellow-100 text-yellow-700' :
+                      item.status === 'Close' ? 'bg-green-100 text-green-700' :
+                      item.status === 'Block' ? 'bg-red-100 text-red-700' :
+                      'bg-gray-100 text-gray-700'
                     }`}>
                       {item.status}
                     </span>
