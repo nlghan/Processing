@@ -417,6 +417,15 @@ export default function MESProcessing() {
                           <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Inspection YN</th>
                         </>
                       )}
+                      {selectedProcess === 3 && (
+                        <>
+                          <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Yield Rate</th>
+                          <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Block distance</th>
+                          <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Concentricity (BGF)</th>
+                          <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Std Location Bottom Pad</th>
+                          <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">JIG/Drawing Insp</th>
+                        </>
+                      )}
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
                       <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Action</th>
                     </tr>
@@ -436,6 +445,15 @@ export default function MESProcessing() {
                           <td className="px-3 py-2 text-center text-gray-700">25 min</td>
                           <td className="px-3 py-2 text-gray-700 whitespace-nowrap">Admin</td>
                           <td className="px-3 py-2 text-center text-gray-700">Yes</td>
+                        </>
+                      )}
+                      {selectedProcess === 3 && (
+                        <>
+                          <td className="px-3 py-2 text-center text-green-600 font-semibold">98%</td>
+                          <td className="px-3 py-2 text-center text-gray-700">0.25 mm</td>
+                          <td className="px-3 py-2 text-center text-gray-700">0.15</td>
+                          <td className="px-3 py-2 text-gray-700">Pass</td>
+                          <td className="px-3 py-2 text-center text-green-600 font-semibold">✓</td>
                         </>
                       )}
                       <td className="px-3 py-2 text-gray-500 text-xs">-</td>
@@ -465,6 +483,15 @@ export default function MESProcessing() {
                           <td className="px-3 py-2 text-center text-gray-700">Yes</td>
                         </>
                       )}
+                      {selectedProcess === 3 && (
+                        <>
+                          <td className="px-3 py-2 text-center text-yellow-600 font-semibold">96%</td>
+                          <td className="px-3 py-2 text-center text-gray-700">0.30 mm</td>
+                          <td className="px-3 py-2 text-center text-gray-700">0.18</td>
+                          <td className="px-3 py-2 text-gray-700">Warning</td>
+                          <td className="px-3 py-2 text-center text-gray-600">-</td>
+                        </>
+                      )}
                       <td className="px-3 py-2 text-gray-500 text-xs">Offset</td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
                         <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
@@ -487,6 +514,15 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-center text-gray-600">-</td>
                       {selectedProcess === 2 && (
                         <>
+                          <td className="px-3 py-2 text-center text-gray-700">25 min</td>
+                          <td className="px-3 py-2 text-gray-700 whitespace-nowrap">Admin</td>
+                          <td className="px-3 py-2 text-center text-gray-700">Yes</td>
+                        </>
+                      )}
+                      {selectedProcess === 3 && (
+                        <>
+                          <td className="px-3 py-2 text-center text-gray-600">-</td>
+                          <td className="px-3 py-2 text-center text-gray-600">-</td>
                           <td className="px-3 py-2 text-center text-gray-600">-</td>
                           <td className="px-3 py-2 text-gray-600">-</td>
                           <td className="px-3 py-2 text-center text-gray-600">-</td>
@@ -513,6 +549,12 @@ export default function MESProcessing() {
                         <>
                           <td className="px-3 py-2.5 text-center text-gray-900">75 min</td>
                           <td colSpan={2}></td>
+                        </>
+                      )}
+                      {selectedProcess === 3 && (
+                        <>
+                          <td className="px-3 py-2.5 text-center text-gray-900">97.3%</td>
+                          <td colSpan={4}></td>
                         </>
                       )}
                       <td colSpan={2}></td>
