@@ -75,14 +75,14 @@ export default function MESProcessing() {
   ];
 
   const processes = [
-    { id: 1, code: 'R01', name: 'RS Ready' },
-    { id: 2, code: 'R02', name: 'Loading' },
-    { id: 3, code: 'R04', name: 'Kiểm tra lần 1' },
-    { id: 4, code: 'R05', name: 'Laser' },
-    { id: 5, code: 'R07', name: 'Dọn dẹp' },
-    { id: 6, code: 'R10', name: 'Vertex' },
-    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt' },
-    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối' },
+    { id: 1, code: 'R01', name: 'RS Ready', nameKo: 'RS준비' },
+    { id: 2, code: 'R02', name: 'Loading', nameKo: '로딩' },
+    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', nameKo: '1차검사' },
+    { id: 4, code: 'R05', name: 'Laser', nameKo: 'RS레이저' },
+    { id: 5, code: 'R07', name: 'Dọn dẹp', nameKo: '정리' },
+    { id: 6, code: 'R10', name: 'Vertex', nameKo: 'Vertex' },
+    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', nameKo: '최종특성검사' },
+    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', nameKo: 'RS최종검사' },
   ];
 
   return (
@@ -345,8 +345,13 @@ export default function MESProcessing() {
                             <span className="text-[9px] font-bold">{process.code}</span>
                           </button>
                           {/* Label */}
-                          <div className={`text-xs font-medium whitespace-nowrap text-center transition-colors ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
-                            {process.name}
+                          <div className="text-center transition-colors">
+                            <div className={`text-xs font-medium whitespace-nowrap ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+                              {process.name}
+                            </div>
+                            <div className={`text-[10px] whitespace-nowrap ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
+                              ({process.nameKo})
+                            </div>
                           </div>
                         </div>
                       );
