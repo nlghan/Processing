@@ -75,15 +75,14 @@ export default function MESProcessing() {
   ];
 
   const processes = [
-    { id: 1, name: 'Ready' },
-    { id: 2, name: 'Loading' },
-    { id: 3, name: 'AOI' },
-    { id: 4, name: 'Drilling' },
-    { id: 5, name: 'Plating' },
-    { id: 6, name: 'Solder' },
-    { id: 7, name: 'Screen' },
-    { id: 8, name: 'Inspect' },
-    { id: 9, name: 'Pack' },
+    { id: 1, code: 'R01', name: 'RS Ready' },
+    { id: 2, code: 'R02', name: 'Loading' },
+    { id: 3, code: 'R04', name: 'Kiểm tra lần 1' },
+    { id: 4, code: 'R05', name: 'Laser' },
+    { id: 5, code: 'R07', name: 'Dọn dẹp' },
+    { id: 6, code: 'R10', name: 'Vertex' },
+    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt' },
+    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối' },
   ];
 
   return (
@@ -334,23 +333,26 @@ export default function MESProcessing() {
                           {/* Dot */}
                           <button
                             onClick={() => setSelectedProcess(process.id)}
-                            className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 transform hover:scale-110 relative z-10 ${
+                            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 transform hover:scale-110 relative z-10 ${
                               isCurrent
                                 ? 'bg-gradient-to-br from-cyan-400 to-blue-500 text-white shadow-lg border-4 border-white'
                                 : isActive
                                 ? 'bg-gradient-to-br from-cyan-400 to-blue-500 text-white border-2 border-white'
                                 : 'bg-gray-200 text-gray-600 border-2 border-white hover:bg-gray-300'
                             }`}
-                            title={`Go to ${process.name}`}
+                            title={`${process.code} - ${process.name}`}
                           >
-                            {process.id}
+                            <span className="text-[9px] font-bold">{process.code}</span>
                           </button>
                           {/* Label */}
-                          <span className={`text-xs font-medium whitespace-nowrap text-center transition-colors ${
-                            isActive ? 'text-blue-600' : 'text-gray-500'
-                          }`}>
-                            {process.name}
-                          </span>
+                          <div className="text-xs font-medium whitespace-nowrap text-center transition-colors">
+                            <div className={`font-bold ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+                              {process.code}
+                            </div>
+                            <div className={`text-[11px] ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
+                              {process.name}
+                            </div>
+                          </div>
                         </div>
                       );
                     })}
