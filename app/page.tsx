@@ -27,6 +27,11 @@ export default function MESProcessing() {
   const [targetQty, setTargetQty] = useState('50');
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const [selectedRowData, setSelectedRowData] = useState(null);
+  const [editingCell, setEditingCell] = useState<string | null>(null);
+  const [cellValues, setCellValues] = useState({
+    row1: { date: '2026-07-10 08:00', finishDate: '2026-07-10 08:25', receiveQty: '100', okQty: '100', ngQty: '0', leadTime: '25 min', checker: 'Admin', inspectionYn: 'Yes', yieldRate: '98%', blockDist: '0.25 mm', concentricity: '0.15', stdLocation: 'Pass', jigInspection: '✓', remark: '-' },
+    row3: { date: '2026-07-10 10:15', finishDate: '2026-07-10 10:35', receiveQty: '30', okQty: '', ngQty: '', leadTime: '', checker: '', inspectionYn: '', yieldRate: '', blockDist: '', concentricity: '', stdLocation: '', jigInspection: '', remark: '' },
+  });
   const [resultPopupOpen, setResultPopupOpen] = useState(false);
   const [endTimePopupOpen, setEndTimePopupOpen] = useState(false);
   const [tempEndTime, setTempEndTime] = useState(() => {
@@ -432,32 +437,122 @@ export default function MESProcessing() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {/* Row 1 - Open */}
-                    <tr onClick={() => setSelectedRow(selectedRow === 1 ? null : 1)} className={`cursor-pointer transition-colors ${selectedRow === 1 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
-                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 1} className="rounded w-3.5 h-3.5" /></td>
+                    {/* Row 1 - Open with Excel-style editing */}
+                    <tr className={`transition-colors ${selectedRow === 1 ? 'bg-blue-50' : 'hover:bg-blue-50'}`}>
+                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 1} className="rounded w-3.5 h-3.5 cursor-pointer" onClick={() => setSelectedRow(selectedRow === 1 ? null : 1)} /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">1</td>
-                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 08:00" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 08:25" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="100" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="100" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="0" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                      {/* Date */}
+                      <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-date')}>
+                        {editingCell === 'row1-date' ? (
+                          <input autoFocus type="text" value={cellValues.row1.date} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, date: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-700">{cellValues.row1.date}</span>
+                        )}
+                      </td>
+                      {/* Finish Line Date */}
+                      <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-finishDate')}>
+                        {editingCell === 'row1-finishDate' ? (
+                          <input autoFocus type="text" value={cellValues.row1.finishDate} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, finishDate: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-700">{cellValues.row1.finishDate}</span>
+                        )}
+                      </td>
+                      {/* Receive Qty */}
+                      <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-receiveQty')}>
+                        {editingCell === 'row1-receiveQty' ? (
+                          <input autoFocus type="number" value={cellValues.row1.receiveQty} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, receiveQty: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-900 font-medium">{cellValues.row1.receiveQty}</span>
+                        )}
+                      </td>
+                      {/* OK Qty */}
+                      <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-okQty')}>
+                        {editingCell === 'row1-okQty' ? (
+                          <input autoFocus type="number" value={cellValues.row1.okQty} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, okQty: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-green-700 font-semibold">{cellValues.row1.okQty}</span>
+                        )}
+                      </td>
+                      {/* NG Qty */}
+                      <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-ngQty')}>
+                        {editingCell === 'row1-ngQty' ? (
+                          <input autoFocus type="number" value={cellValues.row1.ngQty} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, ngQty: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-600">{cellValues.row1.ngQty}</span>
+                        )}
+                      </td>
                       {selectedProcess === 2 && (
                         <>
-                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="25 min" className="w-20 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2"><input type="text" defaultValue="Admin" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="Yes" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-leadTime')}>
+                            {editingCell === 'row1-leadTime' ? (
+                              <input autoFocus type="text" value={cellValues.row1.leadTime} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, leadTime: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-20 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-700">{cellValues.row1.leadTime}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-checker')}>
+                            {editingCell === 'row1-checker' ? (
+                              <input autoFocus type="text" value={cellValues.row1.checker} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, checker: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-700">{cellValues.row1.checker}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-inspectionYn')}>
+                            {editingCell === 'row1-inspectionYn' ? (
+                              <input autoFocus type="text" value={cellValues.row1.inspectionYn} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, inspectionYn: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-700">{cellValues.row1.inspectionYn}</span>
+                            )}
+                          </td>
                         </>
                       )}
                       {selectedProcess === 3 && (
                         <>
-                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="98%" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="0.25 mm" className="w-20 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="0.15" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2"><input type="text" defaultValue="Pass" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="✓" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-yieldRate')}>
+                            {editingCell === 'row1-yieldRate' ? (
+                              <input autoFocus type="text" value={cellValues.row1.yieldRate} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, yieldRate: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-green-600 font-semibold">{cellValues.row1.yieldRate}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-blockDist')}>
+                            {editingCell === 'row1-blockDist' ? (
+                              <input autoFocus type="text" value={cellValues.row1.blockDist} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, blockDist: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-20 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-700">{cellValues.row1.blockDist}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-concentricity')}>
+                            {editingCell === 'row1-concentricity' ? (
+                              <input autoFocus type="text" value={cellValues.row1.concentricity} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, concentricity: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-700">{cellValues.row1.concentricity}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-stdLocation')}>
+                            {editingCell === 'row1-stdLocation' ? (
+                              <input autoFocus type="text" value={cellValues.row1.stdLocation} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, stdLocation: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-700">{cellValues.row1.stdLocation}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row1-jigInspection')}>
+                            {editingCell === 'row1-jigInspection' ? (
+                              <input autoFocus type="text" value={cellValues.row1.jigInspection} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, jigInspection: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-green-600 font-semibold">{cellValues.row1.jigInspection}</span>
+                            )}
+                          </td>
                         </>
                       )}
-                      <td className="px-3 py-2"><input type="text" defaultValue="-" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                      {/* Remark */}
+                      <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-remark')}>
+                        {editingCell === 'row1-remark' ? (
+                          <input autoFocus type="text" value={cellValues.row1.remark} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, remark: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-500 text-xs">{cellValues.row1.remark}</span>
+                        )}
+                      </td>
                       <td className="px-3 py-2 text-center"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Open</span></td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
                         <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
@@ -500,32 +595,116 @@ export default function MESProcessing() {
                       </td>
                     </tr>
 
-                    {/* Row 3 - Open */}
-                    <tr onClick={() => setSelectedRow(selectedRow === 3 ? null : 3)} className={`cursor-pointer transition-colors ${selectedRow === 3 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
-                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 3} className="rounded w-3.5 h-3.5" /></td>
+                    {/* Row 3 - Open with Excel-style editing */}
+                    <tr className={`transition-colors ${selectedRow === 3 ? 'bg-blue-50' : 'hover:bg-blue-50'}`}>
+                      <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 3} className="rounded w-3.5 h-3.5 cursor-pointer" onClick={() => setSelectedRow(selectedRow === 3 ? null : 3)} /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">3</td>
-                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 10:15" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 10:35" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="30" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2 text-center"><input type="number" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                      <td className="px-3 py-2 text-center"><input type="number" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                      <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-date')}>
+                        {editingCell === 'row3-date' ? (
+                          <input autoFocus type="text" value={cellValues.row3.date} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, date: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-700">{cellValues.row3.date}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-finishDate')}>
+                        {editingCell === 'row3-finishDate' ? (
+                          <input autoFocus type="text" value={cellValues.row3.finishDate} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, finishDate: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-700">{cellValues.row3.finishDate}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-receiveQty')}>
+                        {editingCell === 'row3-receiveQty' ? (
+                          <input autoFocus type="number" value={cellValues.row3.receiveQty} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, receiveQty: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-900 font-medium">{cellValues.row3.receiveQty}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-okQty')}>
+                        {editingCell === 'row3-okQty' ? (
+                          <input autoFocus type="number" value={cellValues.row3.okQty} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, okQty: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-600">{cellValues.row3.okQty || '-'}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-ngQty')}>
+                        {editingCell === 'row3-ngQty' ? (
+                          <input autoFocus type="number" value={cellValues.row3.ngQty} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, ngQty: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-600">{cellValues.row3.ngQty || '-'}</span>
+                        )}
+                      </td>
                       {selectedProcess === 2 && (
                         <>
-                          <td className="px-3 py-2 text-center"><input type="text" className="w-20 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2"><input type="text" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-leadTime')}>
+                            {editingCell === 'row3-leadTime' ? (
+                              <input autoFocus type="text" value={cellValues.row3.leadTime} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, leadTime: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-20 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.leadTime || '-'}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-checker')}>
+                            {editingCell === 'row3-checker' ? (
+                              <input autoFocus type="text" value={cellValues.row3.checker} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, checker: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.checker || '-'}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-inspectionYn')}>
+                            {editingCell === 'row3-inspectionYn' ? (
+                              <input autoFocus type="text" value={cellValues.row3.inspectionYn} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, inspectionYn: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.inspectionYn || '-'}</span>
+                            )}
+                          </td>
                         </>
                       )}
                       {selectedProcess === 3 && (
                         <>
-                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" className="w-20 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2"><input type="text" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
-                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-200 rounded text-center text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-yieldRate')}>
+                            {editingCell === 'row3-yieldRate' ? (
+                              <input autoFocus type="text" value={cellValues.row3.yieldRate} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, yieldRate: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.yieldRate || '-'}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-blockDist')}>
+                            {editingCell === 'row3-blockDist' ? (
+                              <input autoFocus type="text" value={cellValues.row3.blockDist} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, blockDist: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-20 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.blockDist || '-'}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-concentricity')}>
+                            {editingCell === 'row3-concentricity' ? (
+                              <input autoFocus type="text" value={cellValues.row3.concentricity} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, concentricity: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.concentricity || '-'}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-stdLocation')}>
+                            {editingCell === 'row3-stdLocation' ? (
+                              <input autoFocus type="text" value={cellValues.row3.stdLocation} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, stdLocation: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.stdLocation || '-'}</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2 text-center cursor-text" onClick={() => setEditingCell('row3-jigInspection')}>
+                            {editingCell === 'row3-jigInspection' ? (
+                              <input autoFocus type="text" value={cellValues.row3.jigInspection} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, jigInspection: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-16 px-2 py-1 border-2 border-blue-400 rounded text-center text-sm bg-white focus:outline-none" />
+                            ) : (
+                              <span className="text-gray-600">{cellValues.row3.jigInspection || '-'}</span>
+                            )}
+                          </td>
                         </>
                       )}
-                      <td className="px-3 py-2"><input type="text" className="w-full px-2 py-1 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" /></td>
+                      <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-remark')}>
+                        {editingCell === 'row3-remark' ? (
+                          <input autoFocus type="text" value={cellValues.row3.remark} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, remark: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
+                        ) : (
+                          <span className="text-gray-500 text-xs">{cellValues.row3.remark || '-'}</span>
+                        )}
+                      </td>
                       <td className="px-3 py-2 text-center"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Open</span></td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
                         <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
