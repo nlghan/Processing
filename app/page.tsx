@@ -427,48 +427,47 @@ export default function MESProcessing() {
                         </>
                       )}
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Status</th>
                       <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {/* Row 1 - Completed */}
+                    {/* Row 1 - Open */}
                     <tr onClick={() => setSelectedRow(selectedRow === 1 ? null : 1)} className={`cursor-pointer transition-colors ${selectedRow === 1 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
                       <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 1} className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">1</td>
-                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 08:00</td>
-                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 08:25</td>
-                      <td className="px-3 py-2 text-center text-gray-900 font-medium">100</td>
-                      <td className="px-3 py-2 text-center text-green-700 font-semibold">100</td>
-                      <td className="px-3 py-2 text-center text-gray-600">0</td>
+                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 08:00" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 08:25" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="100" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="100" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="0" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
                       {selectedProcess === 2 && (
                         <>
-                          <td className="px-3 py-2 text-center text-gray-700">25 min</td>
-                          <td className="px-3 py-2 text-gray-700 whitespace-nowrap">Admin</td>
-                          <td className="px-3 py-2 text-center text-gray-700">Yes</td>
+                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="25 min" className="w-20 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2"><input type="text" defaultValue="Admin" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="Yes" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
                         </>
                       )}
                       {selectedProcess === 3 && (
                         <>
-                          <td className="px-3 py-2 text-center text-green-600 font-semibold">98%</td>
-                          <td className="px-3 py-2 text-center text-gray-700">0.25 mm</td>
-                          <td className="px-3 py-2 text-center text-gray-700">0.15</td>
-                          <td className="px-3 py-2 text-gray-700">Pass</td>
-                          <td className="px-3 py-2 text-center text-green-600 font-semibold">✓</td>
+                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="98%" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="0.25 mm" className="w-20 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="0.15" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2"><input type="text" defaultValue="Pass" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" defaultValue="✓" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
                         </>
                       )}
-                      <td className="px-3 py-2 text-gray-500 text-xs">-</td>
+                      <td className="px-3 py-2"><input type="text" defaultValue="-" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Open</span></td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
                         <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           Defect
                         </button>
-                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(1); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
-                          More
-                        </button>
                       </td>
                     </tr>
 
-                    {/* Row 2 - Open */}
-                    <tr onClick={() => setSelectedRow(selectedRow === 2 ? null : 2)} className={`cursor-pointer transition-colors ${selectedRow === 2 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
+                    {/* Row 2 - Closed (Read-only) */}
+                    <tr onClick={() => setSelectedRow(selectedRow === 2 ? null : 2)} className={`cursor-pointer transition-colors ${selectedRow === 2 ? 'bg-blue-100' : 'hover:bg-blue-50'} bg-gray-50`}>
                       <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 2} className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">2</td>
                       <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 09:10</td>
@@ -493,48 +492,44 @@ export default function MESProcessing() {
                         </>
                       )}
                       <td className="px-3 py-2 text-gray-500 text-xs">Offset</td>
+                      <td className="px-3 py-2 text-center"><span className="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">Close</span></td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
-                        <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                        <button disabled className="text-gray-400 text-xs font-medium cursor-not-allowed whitespace-nowrap">
                           Defect
-                        </button>
-                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(2); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
-                          More
                         </button>
                       </td>
                     </tr>
 
-                    {/* Row 3 - Draft */}
+                    {/* Row 3 - Open */}
                     <tr onClick={() => setSelectedRow(selectedRow === 3 ? null : 3)} className={`cursor-pointer transition-colors ${selectedRow === 3 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
                       <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 3} className="rounded w-3.5 h-3.5" /></td>
                       <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">3</td>
-                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 10:15</td>
-                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 10:35</td>
-                      <td className="px-3 py-2 text-center text-gray-900 font-medium">30</td>
-                      <td className="px-3 py-2 text-center text-gray-600">-</td>
-                      <td className="px-3 py-2 text-center text-gray-600">-</td>
+                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 10:15" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                      <td className="px-3 py-2"><input type="text" defaultValue="2026-07-10 10:35" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><input type="number" defaultValue="30" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><input type="number" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><input type="number" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
                       {selectedProcess === 2 && (
                         <>
-                          <td className="px-3 py-2 text-center text-gray-700">25 min</td>
-                          <td className="px-3 py-2 text-gray-700 whitespace-nowrap">Admin</td>
-                          <td className="px-3 py-2 text-center text-gray-700">Yes</td>
+                          <td className="px-3 py-2 text-center"><input type="text" className="w-20 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2"><input type="text" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
                         </>
                       )}
                       {selectedProcess === 3 && (
                         <>
-                          <td className="px-3 py-2 text-center text-gray-600">-</td>
-                          <td className="px-3 py-2 text-center text-gray-600">-</td>
-                          <td className="px-3 py-2 text-center text-gray-600">-</td>
-                          <td className="px-3 py-2 text-gray-600">-</td>
-                          <td className="px-3 py-2 text-center text-gray-600">-</td>
+                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" className="w-20 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
+                          <td className="px-3 py-2"><input type="text" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                          <td className="px-3 py-2 text-center"><input type="text" className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm" /></td>
                         </>
                       )}
-                      <td className="px-3 py-2 text-gray-500 text-xs">-</td>
+                      <td className="px-3 py-2"><input type="text" className="w-full px-2 py-1 border border-gray-300 rounded text-sm" /></td>
+                      <td className="px-3 py-2 text-center"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Open</span></td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
                         <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           Defect
-                        </button>
-                        <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(3); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
-                          More
                         </button>
                       </td>
                     </tr>
