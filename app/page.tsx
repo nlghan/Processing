@@ -404,30 +404,45 @@ export default function MESProcessing() {
                   <thead className="bg-gray-100 border-b border-gray-200 sticky top-0">
                     <tr>
                       <th className="px-3 py-2.5 text-left w-6"><input type="checkbox" className="rounded w-3.5 h-3.5" /></th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Seq</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Date</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Lot No.</th>
-                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700">Qty</th>
-                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700">OK</th>
-                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700">NG</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Worker</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700">Status</th>
-                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 w-16">Action</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Seq</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Date</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Finish line date</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Receive Qty</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">OK Qty</th>
+                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">NG Qty</th>
+                      {selectedProcess === 2 && (
+                        <>
+                          <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Lead Time</th>
+                          <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Checker</th>
+                          <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Inspection YN</th>
+                        </>
+                      )}
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
+                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {/* Row 1 - Completed */}
                     <tr onClick={() => setSelectedRow(selectedRow === 1 ? null : 1)} className={`cursor-pointer transition-colors ${selectedRow === 1 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
                       <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 1} className="rounded w-3.5 h-3.5" /></td>
-                      <td className="px-3 py-2 font-semibold text-gray-900">1</td>
-                      <td className="px-3 py-2 text-gray-700">2026-07-10 08:00</td>
-                      <td className="px-3 py-2 text-gray-700">LOT2026071001</td>
+                      <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">1</td>
+                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 08:00</td>
+                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 08:25</td>
                       <td className="px-3 py-2 text-center text-gray-900 font-medium">100</td>
                       <td className="px-3 py-2 text-center text-green-700 font-semibold">100</td>
                       <td className="px-3 py-2 text-center text-gray-600">0</td>
-                      <td className="px-3 py-2 text-gray-700">Admin</td>
-                      <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">✓ Done</span></td>
-                      <td className="px-3 py-2 text-right">
+                      {selectedProcess === 2 && (
+                        <>
+                          <td className="px-3 py-2 text-center text-gray-700">25 min</td>
+                          <td className="px-3 py-2 text-gray-700 whitespace-nowrap">Admin</td>
+                          <td className="px-3 py-2 text-center text-gray-700">Yes</td>
+                        </>
+                      )}
+                      <td className="px-3 py-2 text-gray-500 text-xs">-</td>
+                      <td className="px-3 py-2 text-right flex gap-1 justify-end">
+                        <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                          Defect
+                        </button>
                         <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(1); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
@@ -437,15 +452,24 @@ export default function MESProcessing() {
                     {/* Row 2 - Open */}
                     <tr onClick={() => setSelectedRow(selectedRow === 2 ? null : 2)} className={`cursor-pointer transition-colors ${selectedRow === 2 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
                       <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 2} className="rounded w-3.5 h-3.5" /></td>
-                      <td className="px-3 py-2 font-semibold text-gray-900">2</td>
-                      <td className="px-3 py-2 text-gray-700">2026-07-10 09:10</td>
-                      <td className="px-3 py-2 text-gray-700">LOT2026071002</td>
+                      <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">2</td>
+                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 09:10</td>
+                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 09:35</td>
                       <td className="px-3 py-2 text-center text-gray-900 font-medium">50</td>
                       <td className="px-3 py-2 text-center text-gray-900 font-medium">48</td>
                       <td className="px-3 py-2 text-center text-red-600 font-semibold">2</td>
-                      <td className="px-3 py-2 text-gray-700">Admin</td>
-                      <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">⚠ Open</span></td>
-                      <td className="px-3 py-2 text-right">
+                      {selectedProcess === 2 && (
+                        <>
+                          <td className="px-3 py-2 text-center text-gray-700">25 min</td>
+                          <td className="px-3 py-2 text-gray-700 whitespace-nowrap">Admin</td>
+                          <td className="px-3 py-2 text-center text-gray-700">Yes</td>
+                        </>
+                      )}
+                      <td className="px-3 py-2 text-gray-500 text-xs">Offset</td>
+                      <td className="px-3 py-2 text-right flex gap-1 justify-end">
+                        <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                          Defect
+                        </button>
                         <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(2); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
@@ -455,15 +479,24 @@ export default function MESProcessing() {
                     {/* Row 3 - Draft */}
                     <tr onClick={() => setSelectedRow(selectedRow === 3 ? null : 3)} className={`cursor-pointer transition-colors ${selectedRow === 3 ? 'bg-blue-100' : 'hover:bg-blue-50'}`}>
                       <td className="px-3 py-2"><input type="checkbox" readOnly checked={selectedRow === 3} className="rounded w-3.5 h-3.5" /></td>
-                      <td className="px-3 py-2 font-semibold text-gray-900">3</td>
-                      <td className="px-3 py-2 text-gray-700">2026-07-10 10:15</td>
-                      <td className="px-3 py-2 text-gray-700">LOT2026071003</td>
+                      <td className="px-3 py-2 font-semibold text-gray-900 whitespace-nowrap">3</td>
+                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 10:15</td>
+                      <td className="px-3 py-2 text-gray-700 whitespace-nowrap">2026-07-10 10:35</td>
                       <td className="px-3 py-2 text-center text-gray-900 font-medium">30</td>
                       <td className="px-3 py-2 text-center text-gray-600">-</td>
                       <td className="px-3 py-2 text-center text-gray-600">-</td>
-                      <td className="px-3 py-2 text-gray-700">-</td>
-                      <td className="px-3 py-2"><span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">Draft</span></td>
-                      <td className="px-3 py-2 text-right">
+                      {selectedProcess === 2 && (
+                        <>
+                          <td className="px-3 py-2 text-center text-gray-600">-</td>
+                          <td className="px-3 py-2 text-gray-600">-</td>
+                          <td className="px-3 py-2 text-center text-gray-600">-</td>
+                        </>
+                      )}
+                      <td className="px-3 py-2 text-gray-500 text-xs">-</td>
+                      <td className="px-3 py-2 text-right flex gap-1 justify-end">
+                        <button onClick={(e) => { e.stopPropagation(); }} className="text-red-600 hover:text-red-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
+                          Defect
+                        </button>
                         <button onClick={(e) => { e.stopPropagation(); setDetailsPopupRow(3); }} className="text-blue-600 hover:text-blue-700 text-xs font-medium hover:underline transition-colors whitespace-nowrap">
                           More
                         </button>
@@ -476,7 +509,13 @@ export default function MESProcessing() {
                       <td className="px-3 py-2.5 text-center text-gray-900">180</td>
                       <td className="px-3 py-2.5 text-center text-green-700">148</td>
                       <td className="px-3 py-2.5 text-center text-red-600">2</td>
-                      <td colSpan={3} className="px-3 py-2.5 text-right text-gray-900">01:00</td>
+                      {selectedProcess === 2 && (
+                        <>
+                          <td className="px-3 py-2.5 text-center text-gray-900">75 min</td>
+                          <td colSpan={2}></td>
+                        </>
+                      )}
+                      <td colSpan={2}></td>
                     </tr>
                   </tbody>
                 </table>
