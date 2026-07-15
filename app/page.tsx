@@ -345,13 +345,8 @@ export default function MESProcessing() {
                             <span className="text-[9px] font-bold">{process.code}</span>
                           </button>
                           {/* Label */}
-                          <div className="text-xs font-medium whitespace-nowrap text-center transition-colors">
-                            <div className={`font-bold ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
-                              {process.code}
-                            </div>
-                            <div className={`text-[11px] ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
-                              {process.name}
-                            </div>
+                          <div className={`text-xs font-medium whitespace-nowrap text-center transition-colors ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+                            {process.name}
                           </div>
                         </div>
                       );
