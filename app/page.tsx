@@ -12,6 +12,7 @@ export default function MESProcessing() {
   const [equipmentPopup, setEquipmentPopup] = useState(false);
   const [workerPopup, setWorkerPopup] = useState(false);
   const [woListCollapsed, setWoListCollapsed] = useState(false);
+  const [handoverPopupOpen, setHandoverPopupOpen] = useState(false);
   
 
 
@@ -772,74 +773,10 @@ export default function MESProcessing() {
               </div>
             </div>
 
-            {/* Material Section - 1 col */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-800 text-sm">Material</h3>
-                <button className="text-sm bg-yellow-400 text-black px-3 py-1.5 rounded font-semibold hover:bg-yellow-500">↓ BOM</button>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-100 border-b border-gray-200">
-                    <tr>
-                      <th className="px-3 py-2 text-left text-xs font-semibold">Code</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold">Name</th>
-                      <th className="px-3 py-2 text-center text-xs font-semibold">Req</th>
-                      <th className="px-3 py-2 text-center text-xs font-semibold">Issued</th>
-                      <th className="px-3 py-2 text-center text-xs font-semibold">Used</th>
-                      <th className="px-3 py-2 text-center text-xs font-semibold">Remain</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">MAT001</td>
-                      <td className="px-3 py-2 text-sm">Solder Mask</td>
-                      <td className="px-3 py-2 text-center text-sm">0.500</td>
-                      <td className="px-3 py-2 text-center text-sm">0.500</td>
-                      <td className="px-3 py-2 text-center text-sm">0.300</td>
-                      <td className="px-3 py-2 text-center text-sm">0.200</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">MAT002</td>
-                      <td className="px-3 py-2 text-sm">Thinner</td>
-                      <td className="px-3 py-2 text-center text-sm">0.200</td>
-                      <td className="px-3 py-2 text-center text-sm">0.200</td>
-                      <td className="px-3 py-2 text-center text-sm">0.120</td>
-                      <td className="px-3 py-2 text-center text-sm">0.080</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">MAT003</td>
-                      <td className="px-3 py-2 text-sm">Screen Mesh</td>
-                      <td className="px-3 py-2 text-center text-sm">2.000</td>
-                      <td className="px-3 py-2 text-center text-sm">2.000</td>
-                      <td className="px-3 py-2 text-center text-sm">1.000</td>
-                      <td className="px-3 py-2 text-center text-sm">1.000</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-3 py-2 text-sm">MAT004</td>
-                      <td className="px-3 py-2 text-sm">Squeegee</td>
-                      <td className="px-3 py-2 text-center text-sm">2.000</td>
-                      <td className="px-3 py-2 text-center text-sm">2.000</td>
-                      <td className="px-3 py-2 text-center text-sm">1.000</td>
-                      <td className="px-3 py-2 text-center text-sm">1.000</td>
-                    </tr>
-                    <tr className="bg-gray-100 font-semibold">
-                      <td colSpan={2} className="px-3 py-2 text-sm">Total</td>
-                      <td className="px-3 py-2 text-center text-sm">4.700</td>
-                      <td className="px-3 py-2 text-center text-sm">4.700</td>
-                      <td className="px-3 py-2 text-center text-sm">2.420</td>
-                      <td className="px-3 py-2 text-center text-sm">2.280</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Handover Section - 1 col */}
+            {/* Session Handover Section - 1 col */}
             <div className="col-span-1 bg-white rounded-lg border border-gray-200 flex flex-col h-full">
               <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
-                <h3 className="font-semibold text-gray-800 text-sm">Handover</h3>
-                <button className="text-sm bg-orange-500 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-orange-600 transition-colors">Take selected</button>
+                <h3 className="font-semibold text-gray-800 text-sm">Session Handover</h3>
               </div>
               <div className="flex-1 overflow-y-auto">
                 <table className="w-full text-xs">
@@ -862,75 +799,69 @@ export default function MESProcessing() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {[
-                      { seq: 'R01', process: '', sender: '2250844', handoverDate: '2026-03-19 18:37:09', handoverQty: 10, sendRemark: '', receiver: '2250844', receivedDate: '2026-03-19 18:37:20', remainQty: 0, receivedQty: 10, remark: '', status: 'Pending' },
-                    ].map((row, i) => (
-                      <tr 
-                        key={i} 
-                        onDoubleClick={() => alert(`Taking ${row.seq}`)}
-                        className={`transition-colors cursor-pointer ${row.status === 'Pending' ? 'bg-yellow-50 hover:bg-yellow-100' : 'bg-white hover:bg-gray-50'}`}
-                        title="Double-click to take"
-                      >
-                        <td className="px-3 py-2 text-center"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
-                        <td className="px-3 py-2 text-gray-700 font-medium">{row.seq}</td>
-                        <td className="px-3 py-2 text-gray-600">{row.process}</td>
-                        <td className="px-3 py-2 text-gray-700">{row.sender}</td>
-                        <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{row.handoverDate}</td>
-                        <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.handoverQty}</td>
-                        <td className="px-3 py-2 text-gray-500 text-xs">{row.sendRemark || '-'}</td>
-                        <td className="px-3 py-2 text-gray-700">{row.receiver}</td>
-                        <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{row.receivedDate}</td>
-                        <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.remainQty}</td>
-                        <td className="px-3 py-2 text-right text-gray-700 font-medium">{row.receivedQty}</td>
-                        <td className="px-3 py-2 text-gray-500 text-xs">{row.remark || '-'}</td>
-                        <td className="px-3 py-2 text-center">
-                          <span className={`px-2 py-1 rounded text-xs font-semibold whitespace-nowrap inline-block ${
-                            row.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'
-                          }`}>
-                            {row.status}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2 text-center">
-                          <div className="flex items-center justify-center gap-1">
-                            <button 
-                              onClick={() => alert(`Taking ${row.seq}`)}
-                              className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap"
-                              title="Take it"
-                            >
-                              Take it
-                            </button>
-                            <button className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap" title="Edit">
-                              Edit
-                            </button>
-                            <button className="bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-red-600 transition-colors whitespace-nowrap" title="Delete">
-                              Del
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    <tr className="hover:bg-gray-50 text-xs">
+                      <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
+                      <td className="px-3 py-2">1</td>
+                      <td className="px-3 py-2">R01</td>
+                      <td className="px-3 py-2">Nguyễn Văn A</td>
+                      <td className="px-3 py-2 whitespace-nowrap">2026-03-19 10:37:09</td>
+                      <td className="px-3 py-2 text-right">10</td>
+                      <td className="px-3 py-2">-</td>
+                      <td className="px-3 py-2">-</td>
+                      <td className="px-3 py-2 text-gray-500">-</td>
+                      <td className="px-3 py-2 text-right">-</td>
+                      <td className="px-3 py-2 text-right">-</td>
+                      <td className="px-3 py-2">-</td>
+                      <td className="px-3 py-2 text-center"><span className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs">Done</span></td>
+                      <td className="px-3 py-2 text-center"><button className="text-blue-600 hover:text-blue-700">...</button></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-              {/* Fixed Footer */}
-              <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50 flex-shrink-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-600">Show</span>
-                  <select className="border border-gray-300 rounded px-2 py-1 text-xs bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:border-blue-500">
-                    <option>100</option>
-                    <option>50</option>
-                    <option>25</option>
-                  </select>
-                  <span className="text-xs text-gray-600">entries</span>
-                </div>
-                <span className="text-xs text-gray-600">1-1 of 1 items</span>
-                <div className="flex items-center gap-1">
-                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="First">&laquo;</button>
-                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="Previous">&lt;</button>
-                  <button className="border border-gray-300 rounded px-2 py-1 bg-blue-600 text-white font-semibold min-w-[28px]">1</button>
-                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="Next">&gt;</button>
-                  <button className="border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 transition-colors" title="Last">&raquo;</button>
-                </div>
+            </div>
+
+            {/* Material Section - 1 col */}
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800 text-sm">Material (BOM)</h3>
+                <button className="text-sm bg-yellow-400 text-black px-3 py-1.5 rounded font-semibold hover:bg-yellow-500">✕ Add</button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Defect Code</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Defect Name</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">NG Qty</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Remark</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">DF001</td>
+                      <td className="px-3 py-2 text-sm">Scratch</td>
+                      <td className="px-3 py-2 text-center text-sm">1</td>
+                      <td className="px-3 py-2 text-sm">-</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">DF002</td>
+                      <td className="px-3 py-2 text-sm">Dent</td>
+                      <td className="px-3 py-2 text-center text-sm">1</td>
+                      <td className="px-3 py-2 text-sm">-</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">DF003</td>
+                      <td className="px-3 py-2 text-sm">Others</td>
+                      <td className="px-3 py-2 text-center text-sm">0</td>
+                      <td className="px-3 py-2 text-sm">-</td>
+                    </tr>
+                    <tr className="bg-gray-100 font-semibold">
+                      <td colSpan={2} className="px-3 py-2 text-sm">Total NG Qty</td>
+                      <td className="px-3 py-2 text-center text-sm">2</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -939,7 +870,7 @@ export default function MESProcessing() {
               <button className="flex-1 bg-blue-600 text-white rounded-full px-3 py-2 text-xs font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
                 ▶ Start
               </button>
-              <button className="flex-1 bg-green-600 text-white rounded-full px-3 py-2 text-xs font-semibold hover:bg-green-700 transition-colors whitespace-nowrap">
+              <button onClick={() => setHandoverPopupOpen(true)} className="flex-1 bg-green-600 text-white rounded-full px-3 py-2 text-xs font-semibold hover:bg-green-700 transition-colors whitespace-nowrap">
                 ✓ Handover
               </button>
               <button className="flex-1 bg-red-600 text-white rounded-full px-3 py-2 text-xs font-semibold hover:bg-red-700 transition-colors whitespace-nowrap">
@@ -1654,6 +1585,77 @@ export default function MESProcessing() {
                 className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors text-sm"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Handover Popup Modal */}
+      {handoverPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-2xl w-11/12 h-5/6 max-w-6xl overflow-hidden flex flex-col">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center flex-shrink-0">
+              <h2 className="text-lg font-bold text-gray-900">Session Handover</h2>
+              <button 
+                onClick={() => setHandoverPopupOpen(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                  <thead className="bg-gray-100 sticky top-0">
+                    <tr className="border-b border-gray-300">
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Seq</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Process</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Sender Name</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Handover Date</th>
+                      <th className="px-4 py-2 text-right font-semibold text-gray-700 text-xs">Handover Qty</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Send Remark</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Receiver</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Received Date</th>
+                      <th className="px-4 py-2 text-right font-semibold text-gray-700 text-xs">Received Qty</th>
+                      <th className="px-4 py-2 text-left font-semibold text-gray-700 text-xs">Status</th>
+                      <th className="px-4 py-2 text-center font-semibold text-gray-700 text-xs">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-4 py-2 text-sm">1</td>
+                      <td className="px-4 py-2 text-sm">R01</td>
+                      <td className="px-4 py-2 text-sm">Nguyễn Văn A</td>
+                      <td className="px-4 py-2 text-sm whitespace-nowrap">2026-03-19 10:37:09</td>
+                      <td className="px-4 py-2 text-right text-sm">10</td>
+                      <td className="px-4 py-2 text-xs text-gray-500">-</td>
+                      <td className="px-4 py-2 text-sm text-gray-500">-</td>
+                      <td className="px-4 py-2 text-sm text-gray-500">-</td>
+                      <td className="px-4 py-2 text-right text-sm text-gray-500">-</td>
+                      <td className="px-4 py-2 text-center"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Done</span></td>
+                      <td className="px-4 py-2 text-center"><button className="text-blue-600 hover:text-blue-700 text-sm">Edit</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-2 flex-shrink-0">
+              <button
+                onClick={() => setHandoverPopupOpen(false)}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors text-sm"
+              >
+                Close
+              </button>
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm"
+              >
+                Save
               </button>
             </div>
           </div>
