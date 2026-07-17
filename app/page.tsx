@@ -29,8 +29,8 @@ export default function MESProcessing() {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [editingCell, setEditingCell] = useState<string | null>(null);
   const [cellValues, setCellValues] = useState({
-    row1: { date: '2026-07-10 08:00', finishDate: '2026-07-10 08:25', receiveQty: '100', okQty: '100', ngQty: '0', leadTime: '25 min', checker: 'Admin', inspectionYn: 'Yes', yieldRate: '98%', blockDist: '0.25 mm', concentricity: '0.15', stdLocation: 'Pass', jigInspection: '✓', remark: '-' },
-    row3: { date: '2026-07-10 10:15', finishDate: '2026-07-10 10:35', receiveQty: '30', okQty: '', ngQty: '', leadTime: '', checker: '', inspectionYn: '', yieldRate: '', blockDist: '', concentricity: '', stdLocation: '', jigInspection: '', remark: '' },
+    row1: { date: '2026-07-10 08:00', finishDate: '2026-07-10 08:25', receiveQty: '100', okQty: '100', ngQty: '0', leadTime: '25 min', checker: 'Admin', inspectionYn: 'Yes', yieldRate: '98%', blockDist: '0.25 mm', concentricity: '0.15', stdLocation: 'Pass', jigInspection: '✓', remark: '-', productionTeamId: 1 },
+    row3: { date: '2026-07-10 10:15', finishDate: '2026-07-10 10:35', receiveQty: '30', okQty: '', ngQty: '', leadTime: '', checker: '', inspectionYn: '', yieldRate: '', blockDist: '', concentricity: '', stdLocation: '', jigInspection: '', remark: '', productionTeamId: '' },
   });
   const [resultPopupOpen, setResultPopupOpen] = useState(false);
   const [endTimePopupOpen, setEndTimePopupOpen] = useState(false);
@@ -431,6 +431,7 @@ export default function MESProcessing() {
                           <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">JIG/Drawing Insp</th>
                         </>
                       )}
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Production Team</th>
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
                       <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Status</th>
                       <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Action</th>
@@ -545,6 +546,15 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
+                      {/* Production Team */}
+                      <td className="px-3 py-2">
+                        <select value={cellValues.row1.productionTeamId} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
+                          <option value="">Select Team</option>
+                          {productionTeams.map(team => (
+                            <option key={team.id} value={team.id}>{team.name}</option>
+                          ))}
+                        </select>
+                      </td>
                       {/* Remark */}
                       <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-remark')}>
                         {editingCell === 'row1-remark' ? (
@@ -586,6 +596,7 @@ export default function MESProcessing() {
                           <td className="px-3 py-2 text-center text-gray-600">-</td>
                         </>
                       )}
+                      <td className="px-3 py-2 text-gray-700">BOOTH 2</td>
                       <td className="px-3 py-2 text-gray-500 text-xs">Offset</td>
                       <td className="px-3 py-2 text-center"><span className="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">Close</span></td>
                       <td className="px-3 py-2 text-right flex gap-1 justify-end">
@@ -698,6 +709,15 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
+                      {/* Production Team */}
+                      <td className="px-3 py-2">
+                        <select value={cellValues.row3.productionTeamId} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
+                          <option value="">Select Team</option>
+                          {productionTeams.map(team => (
+                            <option key={team.id} value={team.id}>{team.name}</option>
+                          ))}
+                        </select>
+                      </td>
                       <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-remark')}>
                         {editingCell === 'row3-remark' ? (
                           <input autoFocus type="text" value={cellValues.row3.remark} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, remark: e.target.value}})} onBlur={() => setEditingCell(null)} className="w-full px-2 py-1 border-2 border-blue-400 rounded text-sm bg-white focus:outline-none" />
