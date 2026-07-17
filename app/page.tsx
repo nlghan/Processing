@@ -803,8 +803,10 @@ export default function MESProcessing() {
               </div>
             </div>
 
-            {/* Material Section - 1 col */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+            {/* Bottom Sections Wrapper - Full width with flex */}
+            <div className="col-span-3 flex gap-4">
+              {/* Material Section - Fill half */}
+              <div className="flex-1 bg-white rounded-lg border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800 text-sm">Material (BOM)</h3>
                 <button className="text-sm bg-yellow-400 text-black px-3 py-1.5 rounded font-semibold hover:bg-yellow-500">↓ BOM</button>
@@ -866,8 +868,8 @@ export default function MESProcessing() {
               </div>
             </div>
 
-            {/* Defect / Issue Section - 1 col */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+              {/* Defect / Issue Section - Fill half */}
+              <div className="flex-1 bg-white rounded-lg border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800 text-sm">Defect / Issue</h3>
                 <button className="text-sm bg-blue-100 text-blue-700 px-3 py-1.5 rounded font-semibold hover:bg-blue-200">+ Add</button>
@@ -914,9 +916,10 @@ export default function MESProcessing() {
                 </table>
               </div>
             </div>
+            </div>
 
-            {/* Action Buttons - 2 cols */}
-            <div className="col-span-2 flex gap-2 pb-4">
+            {/* Action Buttons - Full width (3 cols) */}
+            <div className="col-span-3 flex gap-2 pb-4">
               <button className="flex-1 bg-blue-600 text-white rounded-full px-3 py-2 text-xs font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
                 ▶ Start
               </button>
