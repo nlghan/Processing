@@ -12,6 +12,8 @@ export default function MESProcessing() {
   const [equipmentPopup, setEquipmentPopup] = useState(false);
   const [workerPopup, setWorkerPopup] = useState(false);
   const [woListCollapsed, setWoListCollapsed] = useState(false);
+  
+
 
   // Production Timer state
   const [timerType, setTimerType] = useState<'manual' | 'machine'>('manual');
@@ -80,15 +82,19 @@ export default function MESProcessing() {
   ];
 
   const processes = [
-    { id: 1, code: 'R01', name: 'RS Ready', nameKo: 'RS준비' },
-    { id: 2, code: 'R02', name: 'Loading', nameKo: '로딩' },
-    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', nameKo: '1차검사' },
-    { id: 4, code: 'R05', name: 'Laser', nameKo: 'RS레이저' },
-    { id: 5, code: 'R07', name: 'Dọn dẹp', nameKo: '정리' },
-    { id: 6, code: 'R10', name: 'Vertex', nameKo: 'Vertex' },
-    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', nameKo: '최종특성검사' },
-    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', nameKo: 'RS최종검사' },
+    { id: 1, code: 'R01', name: 'RS Ready', nameKo: 'RS준비', isMachine: false },
+    { id: 2, code: 'R02', name: 'Loading', nameKo: '로딩', isMachine: true },
+    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', nameKo: '1차검사', isMachine: true },
+    { id: 4, code: 'R05', name: 'Laser', nameKo: 'RS레이저', isMachine: true },
+    { id: 5, code: 'R07', name: 'Dọn dẹp', nameKo: '정리', isMachine: false },
+    { id: 6, code: 'R10', name: 'Vertex', nameKo: 'Vertex', isMachine: true },
+    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', nameKo: '최종특性검사', isMachine: true },
+    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', nameKo: 'RS최종검사', isMachine: true },
   ];
+  
+  // Get current process info
+  const currentProcess = processes.find(p => p.id === selectedProcess);
+  const isMachineProcess = currentProcess?.isMachine ?? false;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -949,7 +955,8 @@ export default function MESProcessing() {
           </div>
           </div>
 
-          {/* Production Timer Sidebar */}
+          {/* Production Timer Sidebar - Only for Machine Processes */}
+          {isMachineProcess && (
           <div className="w-72 bg-white border-l border-gray-200 flex flex-col overflow-y-auto flex-shrink-0">
             {/* Timer Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0">
@@ -1158,6 +1165,7 @@ export default function MESProcessing() {
               </div>
             </div>}
           </div>
+          )}
         </div>
       </div>
 
