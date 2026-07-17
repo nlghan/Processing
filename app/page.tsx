@@ -84,13 +84,13 @@ export default function MESProcessing() {
 
   const processes = [
     { id: 1, code: 'R01', name: 'RS Ready', nameKo: 'RS준비', isMachine: false },
-    { id: 2, code: 'R02', name: 'Loading', nameKo: '로딩', isMachine: true },
-    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', nameKo: '1차검사', isMachine: true },
-    { id: 4, code: 'R05', name: 'Laser', nameKo: 'RS레이저', isMachine: true },
+    { id: 2, code: 'R02', name: 'Loading', nameKo: '로딩', isMachine: false },
+    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', nameKo: '1차검사', isMachine: false },
+    { id: 4, code: 'R05', name: 'Laser', nameKo: 'RS레이저', isMachine: false },
     { id: 5, code: 'R07', name: 'Dọn dẹp', nameKo: '정리', isMachine: false },
     { id: 6, code: 'R10', name: 'Vertex', nameKo: 'Vertex', isMachine: true },
-    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', nameKo: '최종특性검사', isMachine: true },
-    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', nameKo: 'RS최종검사', isMachine: true },
+    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', nameKo: '최종특性검사', isMachine: false },
+    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', nameKo: 'RS최종검사', isMachine: false },
   ];
   
   // Get current process info
@@ -583,9 +583,9 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
-                      {/* Lines - Only for R02 and R04 */}
+                      {/* Lines - Only for R10 */}
                       <td className="px-3 py-2">
-                        {(selectedProcess === 2 || selectedProcess === 3) ? (
+                        {selectedProcess === 6 ? (
                           <select value={cellValues.row1.productionTeamId} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
                             <option value="">Select Line</option>
                             {productionTeams.map(team => (
@@ -750,9 +750,9 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
-                      {/* Lines - Only for R02 and R04 */}
+                      {/* Lines - Only for R10 */}
                       <td className="px-3 py-2">
-                        {(selectedProcess === 2 || selectedProcess === 3) ? (
+                        {selectedProcess === 6 ? (
                           <select value={cellValues.row3.productionTeamId} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
                             <option value="">Select Line</option>
                             {productionTeams.map(team => (
