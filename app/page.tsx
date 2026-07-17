@@ -83,14 +83,14 @@ export default function MESProcessing() {
   ];
 
   const processes = [
-    { id: 1, code: 'R01', name: 'RS Ready', nameKo: 'RS준비', isMachine: false },
-    { id: 2, code: 'R02', name: 'Loading', nameKo: '로딩', isMachine: false },
-    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', nameKo: '1차검사', isMachine: false },
-    { id: 4, code: 'R05', name: 'Laser', nameKo: 'RS레이저', isMachine: false },
-    { id: 5, code: 'R07', name: 'Dọn dẹp', nameKo: '정리', isMachine: false },
-    { id: 6, code: 'R10', name: 'Vertex', nameKo: 'Vertex', isMachine: true },
-    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', nameKo: '최종특性검사', isMachine: false },
-    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', nameKo: 'RS최종검사', isMachine: false },
+    { id: 1, code: 'R01', name: 'RS Ready', displayName: 'RS Ready', nameKo: 'RS준비', isMachine: false },
+    { id: 2, code: 'R02', name: 'Loading', displayName: 'Loading', nameKo: '로딩', isMachine: false },
+    { id: 3, code: 'R04', name: 'Kiểm tra lần 1', displayName: 'Inspect 1st', nameKo: '1차검사', isMachine: false },
+    { id: 4, code: 'R05', name: 'Laser', displayName: 'Laser', nameKo: 'RS레이저', isMachine: false },
+    { id: 5, code: 'R07', name: 'Dọn dẹp', displayName: 'Clean up', nameKo: '정리', isMachine: false },
+    { id: 6, code: 'R10', name: 'Vertex', displayName: 'Vertex', nameKo: 'Vertex', isMachine: true },
+    { id: 7, code: 'R13', name: 'Công đoạn đo đặc biệt', displayName: 'Special Meas', nameKo: '최종특성검사', isMachine: false },
+    { id: 8, code: 'R08', name: 'RS Kiểm tra lần cuối', displayName: 'Final Inspect', nameKo: 'RS최종검사', isMachine: false },
   ];
   
   // Get current process info
@@ -357,11 +357,11 @@ export default function MESProcessing() {
                             <span className="text-[9px] font-bold">{process.code}</span>
                           </button>
                           {/* Label */}
-                          <div className="text-center transition-colors">
-                            <div className={`text-xs font-medium whitespace-nowrap ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
-                              {process.name}
+                          <div className="text-center transition-colors max-w-[70px]">
+                            <div className={`text-xs font-medium break-words leading-tight ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+                              {process.displayName || process.name}
                             </div>
-                            <div className={`text-[10px] whitespace-nowrap ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
+                            <div className={`text-[9px] break-words leading-tight ${isActive ? 'text-blue-500' : 'text-gray-400'}`}>
                               ({process.nameKo})
                             </div>
                           </div>
