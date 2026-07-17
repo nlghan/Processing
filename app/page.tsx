@@ -468,7 +468,7 @@ export default function MESProcessing() {
                           <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">JIG/Drawing Insp</th>
                         </>
                       )}
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Production Team</th>
+                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Lines</th>
                       <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
                       <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Status</th>
                       <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Action</th>
@@ -583,11 +583,11 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
-                      {/* Production Team - Only for R02 and R04 */}
+                      {/* Lines - Only for R02 and R04 */}
                       <td className="px-3 py-2">
                         {(selectedProcess === 2 || selectedProcess === 3) ? (
                           <select value={cellValues.row1.productionTeamId} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
-                            <option value="">Select Team</option>
+                            <option value="">Select Line</option>
                             {productionTeams.map(team => (
                               <option key={team.id} value={team.id}>{team.name}</option>
                             ))}
@@ -750,11 +750,11 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
-                      {/* Production Team - Only for R02 and R04 */}
+                      {/* Lines - Only for R02 and R04 */}
                       <td className="px-3 py-2">
                         {(selectedProcess === 2 || selectedProcess === 3) ? (
                           <select value={cellValues.row3.productionTeamId} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
-                            <option value="">Select Team</option>
+                            <option value="">Select Line</option>
                             {productionTeams.map(team => (
                               <option key={team.id} value={team.id}>{team.name}</option>
                             ))}
