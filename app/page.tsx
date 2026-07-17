@@ -273,8 +273,8 @@ export default function MESProcessing() {
           <div className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-2 gap-4 p-4 auto-rows-max">
             
-            {/* Process Flow - Compact Card */}
-            <div className="col-span-2 bg-white rounded-lg border border-gray-200 p-5">
+            {/* Process Status - Left */}
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800 text-sm">Process Status</h3>
                 <div className="flex items-center gap-2">
@@ -368,6 +368,36 @@ export default function MESProcessing() {
                         </div>
                       );
                     })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Target / Progress - Right */}
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+              <h3 className="font-semibold text-gray-800 text-sm mb-4">Target / Progress</h3>
+              <div className="space-y-4">
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <div className="text-xs text-gray-500 font-medium mb-1">Target Qty</div>
+                    <div className="text-2xl font-bold text-gray-900">1,000</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 font-medium mb-1">OK Qty</div>
+                    <div className="text-2xl font-bold text-green-600">650</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 font-medium mb-1">NG Qty</div>
+                    <div className="text-2xl font-bold text-red-600">12</div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-xs font-medium text-gray-600">Progress</span>
+                    <span className="text-xs font-semibold text-gray-800">65%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{width: '65%'}}></div>
                   </div>
                 </div>
               </div>
@@ -773,58 +803,74 @@ export default function MESProcessing() {
               </div>
             </div>
 
-            {/* Session Handover Section - 1 col */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 flex flex-col h-full">
-              <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
-                <h3 className="font-semibold text-gray-800 text-sm">Session Handover</h3>
+            {/* Material Section - 1 col */}
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800 text-sm">Material (BOM)</h3>
+                <button className="text-sm bg-yellow-400 text-black px-3 py-1.5 rounded font-semibold hover:bg-yellow-500">↓ BOM</button>
               </div>
-              <div className="flex-1 overflow-y-auto">
-                <table className="w-full text-xs">
-                  <thead className="sticky top-0">
-                    <tr className="bg-gray-100 border-y border-gray-300">
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap w-8"><input type="checkbox" className="rounded w-3.5 h-3.5" /></th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">seq</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Process</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Sender name</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Handover Date</th>
-                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Handover Qty</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Send Remark</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Receiver</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Received Date</th>
-                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Remain Qty</th>
-                      <th className="px-3 py-2.5 text-right font-semibold text-gray-700 whitespace-nowrap">Received Qty</th>
-                      <th className="px-3 py-2.5 text-left font-semibold text-gray-700 whitespace-nowrap">Remark</th>
-                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Status</th>
-                      <th className="px-3 py-2.5 text-center font-semibold text-gray-700 whitespace-nowrap">Actions</th>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-100 border-b border-gray-200">
+                    <tr>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Code</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold">Name</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">Req</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">Issued</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">Used</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">Remain</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-gray-50 text-xs">
-                      <td className="px-3 py-2"><input type="checkbox" className="rounded w-3.5 h-3.5" /></td>
-                      <td className="px-3 py-2">1</td>
-                      <td className="px-3 py-2">R01</td>
-                      <td className="px-3 py-2">Nguyễn Văn A</td>
-                      <td className="px-3 py-2 whitespace-nowrap">2026-03-19 10:37:09</td>
-                      <td className="px-3 py-2 text-right">10</td>
-                      <td className="px-3 py-2">-</td>
-                      <td className="px-3 py-2">-</td>
-                      <td className="px-3 py-2 text-gray-500">-</td>
-                      <td className="px-3 py-2 text-right">-</td>
-                      <td className="px-3 py-2 text-right">-</td>
-                      <td className="px-3 py-2">-</td>
-                      <td className="px-3 py-2 text-center"><span className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs">Done</span></td>
-                      <td className="px-3 py-2 text-center"><button className="text-blue-600 hover:text-blue-700">...</button></td>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">MAT001</td>
+                      <td className="px-3 py-2 text-sm">Solder Mask</td>
+                      <td className="px-3 py-2 text-center text-sm">0.500</td>
+                      <td className="px-3 py-2 text-center text-sm">0.500</td>
+                      <td className="px-3 py-2 text-center text-sm">0.300</td>
+                      <td className="px-3 py-2 text-center text-sm">0.200</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">MAT002</td>
+                      <td className="px-3 py-2 text-sm">Thinner</td>
+                      <td className="px-3 py-2 text-center text-sm">0.200</td>
+                      <td className="px-3 py-2 text-center text-sm">0.200</td>
+                      <td className="px-3 py-2 text-center text-sm">0.120</td>
+                      <td className="px-3 py-2 text-center text-sm">0.080</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">MAT003</td>
+                      <td className="px-3 py-2 text-sm">Screen Mesh</td>
+                      <td className="px-3 py-2 text-center text-sm">2.000</td>
+                      <td className="px-3 py-2 text-center text-sm">2.000</td>
+                      <td className="px-3 py-2 text-center text-sm">1.000</td>
+                      <td className="px-3 py-2 text-center text-sm">1.000</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-sm">MAT004</td>
+                      <td className="px-3 py-2 text-sm">Squeegee</td>
+                      <td className="px-3 py-2 text-center text-sm">2.000</td>
+                      <td className="px-3 py-2 text-center text-sm">2.000</td>
+                      <td className="px-3 py-2 text-center text-sm">1.000</td>
+                      <td className="px-3 py-2 text-center text-sm">1.000</td>
+                    </tr>
+                    <tr className="bg-gray-100 font-semibold">
+                      <td colSpan={2} className="px-3 py-2 text-sm">Total</td>
+                      <td className="px-3 py-2 text-center text-sm">4.700</td>
+                      <td className="px-3 py-2 text-center text-sm">4.700</td>
+                      <td className="px-3 py-2 text-center text-sm">2.420</td>
+                      <td className="px-3 py-2 text-center text-sm">2.280</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            {/* Material Section - 1 col */}
+            {/* Defect / Issue Section - 1 col */}
             <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-800 text-sm">Material (BOM)</h3>
-                <button className="text-sm bg-yellow-400 text-black px-3 py-1.5 rounded font-semibold hover:bg-yellow-500">✕ Add</button>
+                <h3 className="font-semibold text-gray-800 text-sm">Defect / Issue</h3>
+                <button className="text-sm bg-blue-100 text-blue-700 px-3 py-1.5 rounded font-semibold hover:bg-blue-200">+ Add</button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -834,6 +880,7 @@ export default function MESProcessing() {
                       <th className="px-3 py-2 text-left text-xs font-semibold">Defect Name</th>
                       <th className="px-3 py-2 text-center text-xs font-semibold">NG Qty</th>
                       <th className="px-3 py-2 text-left text-xs font-semibold">Remark</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
@@ -842,23 +889,26 @@ export default function MESProcessing() {
                       <td className="px-3 py-2 text-sm">Scratch</td>
                       <td className="px-3 py-2 text-center text-sm">1</td>
                       <td className="px-3 py-2 text-sm">-</td>
+                      <td className="px-3 py-2 text-center"><button className="text-red-600 hover:text-red-700 text-sm">🗑</button></td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="px-3 py-2 text-sm">DF002</td>
                       <td className="px-3 py-2 text-sm">Dent</td>
                       <td className="px-3 py-2 text-center text-sm">1</td>
                       <td className="px-3 py-2 text-sm">-</td>
+                      <td className="px-3 py-2 text-center"><button className="text-red-600 hover:text-red-700 text-sm">🗑</button></td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="px-3 py-2 text-sm">DF003</td>
                       <td className="px-3 py-2 text-sm">Others</td>
                       <td className="px-3 py-2 text-center text-sm">0</td>
                       <td className="px-3 py-2 text-sm">-</td>
+                      <td className="px-3 py-2 text-center"><button className="text-red-600 hover:text-red-700 text-sm">🗑</button></td>
                     </tr>
                     <tr className="bg-gray-100 font-semibold">
                       <td colSpan={2} className="px-3 py-2 text-sm">Total NG Qty</td>
-                      <td className="px-3 py-2 text-center text-sm">2</td>
-                      <td></td>
+                      <td className="px-3 py-2 text-center text-sm text-red-600">2</td>
+                      <td colSpan={2}></td>
                     </tr>
                   </tbody>
                 </table>
