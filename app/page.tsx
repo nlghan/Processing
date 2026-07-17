@@ -271,10 +271,10 @@ export default function MESProcessing() {
         <div className="flex-1 flex overflow-hidden bg-gray-50">
           {/* Main scrollable area */}
           <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-2 gap-4 p-4 auto-rows-max">
+          <div className="grid grid-cols-3 gap-4 p-4 auto-rows-max">
             
-            {/* Process Status - Left */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+            {/* Process Status - Left (2 columns) */}
+            <div className="col-span-2 bg-white rounded-lg border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800 text-sm">Process Status</h3>
                 <div className="flex items-center gap-2">
@@ -373,8 +373,8 @@ export default function MESProcessing() {
               </div>
             </div>
 
-            {/* Target / Progress - Right */}
-            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5">
+            {/* Target / Progress - Right (1 column) */}
+            <div className="col-span-1 bg-white rounded-lg border border-gray-200 p-5 flex flex-col justify-center">
               <h3 className="font-semibold text-gray-800 text-sm mb-4">Target / Progress</h3>
               <div className="space-y-4">
                 <div className="grid grid-cols-3 gap-3">
@@ -403,8 +403,8 @@ export default function MESProcessing() {
               </div>
             </div>
 
-            {/* Processing Session Table - 2 cols */}
-            <div className="col-span-2 bg-white rounded-lg border border-gray-200 flex flex-col">
+            {/* Processing Session Table - Full width (3 cols) */}
+            <div className="col-span-3 bg-white rounded-lg border border-gray-200 flex flex-col">
               <div className="flex items-center justify-between p-5 border-b border-gray-200 flex-shrink-0">
                 <h3 className="font-semibold text-gray-800 text-sm">Processing Session</h3>
                 <div className="flex gap-1.5">
