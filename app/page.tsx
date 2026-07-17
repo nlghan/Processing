@@ -546,14 +546,18 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
-                      {/* Production Team */}
+                      {/* Production Team - Only for R02 and R04 */}
                       <td className="px-3 py-2">
-                        <select value={cellValues.row1.productionTeamId} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
-                          <option value="">Select Team</option>
-                          {productionTeams.map(team => (
-                            <option key={team.id} value={team.id}>{team.name}</option>
-                          ))}
-                        </select>
+                        {(selectedProcess === 2 || selectedProcess === 3) ? (
+                          <select value={cellValues.row1.productionTeamId} onChange={(e) => setCellValues({...cellValues, row1: {...cellValues.row1, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
+                            <option value="">Select Team</option>
+                            {productionTeams.map(team => (
+                              <option key={team.id} value={team.id}>{team.name}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
                       </td>
                       {/* Remark */}
                       <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row1-remark')}>
@@ -709,14 +713,18 @@ export default function MESProcessing() {
                           </td>
                         </>
                       )}
-                      {/* Production Team */}
+                      {/* Production Team - Only for R02 and R04 */}
                       <td className="px-3 py-2">
-                        <select value={cellValues.row3.productionTeamId} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
-                          <option value="">Select Team</option>
-                          {productionTeams.map(team => (
-                            <option key={team.id} value={team.id}>{team.name}</option>
-                          ))}
-                        </select>
+                        {(selectedProcess === 2 || selectedProcess === 3) ? (
+                          <select value={cellValues.row3.productionTeamId} onChange={(e) => setCellValues({...cellValues, row3: {...cellValues.row3, productionTeamId: parseInt(e.target.value) || ''}})} className="w-full px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 cursor-pointer">
+                            <option value="">Select Team</option>
+                            {productionTeams.map(team => (
+                              <option key={team.id} value={team.id}>{team.name}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
                       </td>
                       <td className="px-3 py-2 cursor-text" onClick={() => setEditingCell('row3-remark')}>
                         {editingCell === 'row3-remark' ? (
